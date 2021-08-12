@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="Home"
+        android:icon="@drawable/ic_baseline_home_24"/>
+    <item
+        android:title="Timer"
+        android:icon="@drawable/ic_baseline_alarm_off_24"/>
+    <item
+        android:title="Friend"
+        android:icon="@drawable/ic_baseline_access_alarm_24"/>
+    <item
+        android:title="Calendar"
+        android:icon="@drawable/ic_baseline_play_circle_filled_24"/>
+    <item
+        android:title="Youtube"
+        android:icon="@drawable/ic_baseline_play_circle_outline_24"/>
+</menu>

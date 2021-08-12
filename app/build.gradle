@@ -39,10 +39,13 @@ android {
 }
 
 dependencies {
-
+    def nav_version = "2.3.5" // bottom navigation bar
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     def lifecycle_version = "2.4.0-alpha02"
     implementation "androidx.lifecycle:lifecycle-service:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version" //lifecycleservice
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version" //lifecycle service
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version" //livedata
     implementation "androidx.activity:activity-ktx:1.1.0"
 

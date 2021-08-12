@@ -55,8 +55,6 @@ class TimerService: LifecycleService() {
                 }
                 ACTION_DOWNTIMER_START ->{
                     startForegroundService(it.action!!,it.getLongExtra("data", -1))
-
-                    Log.d("IntentgetEXTRA","${it.getLongExtra("data", -1)}")
                 }
                 ACTION_DOWNTIMER_STOP ->{
                     Log.d("tag", "stopService")
@@ -151,24 +149,22 @@ class TimerService: LifecycleService() {
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.START){
                 lapTime = System.currentTimeMillis() - timeStarted
                 timerInMillis.postValue(lapTime)
-                delay(50L)
+                delay(1000L)
             }
         }
     }
     private fun startDownTimer(data: Long){
         var starting = data*1000
         CoroutineScope(Dispatchers.Main).launch {
-            Log.d("tag","15")
             object : CountDownTimer(starting, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     if(!isServiceStopped && timerEvent.value!! == TimerEvent.START) {
                         starting = millisUntilFinished
                         timerInMin.postValue(starting)
-                        Log.d("tag", starting.toString())
                     }
                 }
                 override fun onFinish() {
-                    stopService()
+                    stopService()   
                 }
             }.start()
         }
