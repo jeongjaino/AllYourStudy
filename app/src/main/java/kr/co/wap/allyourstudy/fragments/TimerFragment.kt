@@ -1,4 +1,4 @@
-package kr.co.wap.allyourstudy
+package kr.co.wap.allyourstudy.fragments
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,9 +8,9 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TimePicker
 import androidx.fragment.app.Fragment
+import kr.co.wap.allyourstudy.MainActivity
+import kr.co.wap.allyourstudy.R
 import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.FragmentTimerBinding
 import kr.co.wap.allyourstudy.dialog.DownTimerDialogFragment

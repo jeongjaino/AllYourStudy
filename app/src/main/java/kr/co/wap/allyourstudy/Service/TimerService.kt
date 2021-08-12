@@ -18,10 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.wap.allyourstudy.R
-import kr.co.wap.allyourstudy.TimerFragment
+import kr.co.wap.allyourstudy.fragments.TimerFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.utils.*
-import java.util.concurrent.TimeUnit
 
 class TimerService: LifecycleService() {
 
