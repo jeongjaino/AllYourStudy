@@ -1,16 +1,19 @@
 package kr.co.wap.allyourstudy
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
-import kr.co.wap.allyourstudy.utils.TimerUtil
 import kr.co.wap.allyourstudy.fragments.HomeFragment
 import kr.co.wap.allyourstudy.fragments.TimerFragment
 import kr.co.wap.allyourstudy.fragments.YoutubeFragment
+import kr.co.wap.allyourstudy.utils.TimerUtil
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,22 +66,14 @@ class MainActivity : AppCompatActivity() {
     }
     fun goTimer(){
         replaceFragment(timerFragment)
-        timerVisibleToggle(timerFragment)
+        binding.mainCardView.visibility = View.GONE
     }
     fun goYouTube(){
         replaceFragment(youtubeFragment)
-        timerVisibleToggle(youtubeFragment)
+        binding.mainCardView.visibility = View.VISIBLE
     }
     fun goHome(){
         replaceFragment(homeFragment)
-        timerVisibleToggle(homeFragment)
-    }
-    private fun timerVisibleToggle(fragment: Fragment){
-        if(fragment == timerFragment) {
-            binding.mainCardView.visibility = View.GONE
-        }
-        else{
-            binding.mainCardView.visibility = View.VISIBLE
-        }
+        binding.mainCardView.visibility = View.VISIBLE
     }
 }
