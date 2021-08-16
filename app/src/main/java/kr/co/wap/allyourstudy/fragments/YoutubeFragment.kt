@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import kr.co.wap.allyourstudy.databinding.FragmentYoutubeBinding
 
 class YoutubeFragment : Fragment() {
+
     val binding by lazy{FragmentYoutubeBinding.inflate(layoutInflater)}
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,

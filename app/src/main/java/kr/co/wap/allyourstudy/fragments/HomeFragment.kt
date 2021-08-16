@@ -10,12 +10,12 @@ import kr.co.wap.allyourstudy.databinding.FragmentHomeBinding
 class HomeFragment : Fragment() {
 
     val binding by lazy{FragmentHomeBinding.inflate(layoutInflater)}
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
 
     ): View? {
-
         return binding.root
     }
 }

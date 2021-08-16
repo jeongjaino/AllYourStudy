@@ -38,4 +38,11 @@ object TimerUtil {
                 "${if (minutes < 10) "0" else ""}$minutes:" +
                 "${if (seconds < 10) "0" else ""}$seconds"
     }
+    fun getLongTimer(time: String): Long{
+        val hours = time[0].digitToIntOrNull()!! * 10 + time[1].digitToIntOrNull()!!
+        val minutes = time[3].digitToIntOrNull()!! * 10 + time[4].digitToIntOrNull()!!
+        val seconds = time[6].digitToIntOrNull()!! * 10 + time[7].digitToIntOrNull()!!
+
+        return (hours * 3600 + minutes * 60 + seconds).toLong()
+    }
 }

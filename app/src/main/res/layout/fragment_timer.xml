@@ -6,35 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/downTimerFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="44dp"
-        android:layout_marginRight="44dp"
-        android:layout_marginBottom="32dp"
-        android:clickable="true"
-        app:backgroundTint="#FFEB3B"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/timerFab"
-        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/timerFab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:layout_marginBottom="32dp"
-        app:backgroundTint="#FFC107"
-        app:fabSize="normal"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:rippleColor="@android:color/white"
-        app:srcCompat="@drawable/ic_baseline_access_alarm_24"
-        app:tint="@android:color/black" />
-
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:cardCornerRadius="8dp"
@@ -45,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/timer"
+            android:id="@+id/upTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="16dp"
@@ -57,30 +30,26 @@
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.cardview.widget.CardView>
 
-    <TextView
-        android:id="@+id/textView"
+    <Button
+        android:id="@+id/upTimer_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="오늘 하루 누적시간 :"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/cumulativeCycleTime"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="Start"
+        app:layout_constraintEnd_toStartOf="@+id/upTimer_reset_button"
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
-    <TextView
-        android:id="@+id/cumulativeCycleTime"
+    <Button
+        android:id="@+id/upTimer_reset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="00:00:00"
-        android:textSize="20sp"
-        android:textStyle="bold"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginRight="32dp"
+        android:text="reset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/textView"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

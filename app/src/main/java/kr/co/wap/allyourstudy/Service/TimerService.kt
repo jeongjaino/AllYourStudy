@@ -3,6 +3,7 @@ package kr.co.wap.allyourstudy.Service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.app.Service
 import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
@@ -28,6 +29,7 @@ class TimerService: LifecycleService() {
         val timerEvent = MutableLiveData<TimerEvent>()
         val timerInMillis = MutableLiveData<Long>()
         val timerInMin = MutableLiveData<Long>()
+        val timerPomodoro = MutableLiveData<Long>()
     }
 
     private lateinit var notificationManager: NotificationManagerCompat
@@ -38,15 +40,16 @@ class TimerService: LifecycleService() {
     override fun onCreate() {
         super.onCreate()
         notificationManager = NotificationManagerCompat.from(this)
-        initValues()
+        //initValues
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
             val any = when (it.action) {
                 ACTION_TIMER_START -> {
                     Log.d("tag", "startService")
-                    startForegroundService(it.action!!,0)
+                    startForegroundService(it.action!!,it.getLongExtra("data",-1))
                 }
                 ACTION_TIMER_STOP -> {
                     Log.d("tag", "stopService")
@@ -59,7 +62,16 @@ class TimerService: LifecycleService() {
                     Log.d("tag", "stopService")
                     stopService()
                 }
-                else -> Log.d("Tag","Else")
+                ACTION_POMODORO_TIMER_START ->{
+                    startForegroundService(it.action!!,it.getLongExtra("data", -1))
+                }
+                ACTION_POMODORO_TIMER_STOP ->{
+                    stopService()
+                }
+                ACTION_TIMER_PAUSE ->{
+                    pauseService()
+                }
+                else -> {Log.d("Tag","else")}
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -69,38 +81,47 @@ class TimerService: LifecycleService() {
         timerEvent.postValue(TimerEvent.END)
         timerInMillis.postValue(0L)
         timerInMin.postValue(0L)
+        timerPomodoro.postValue(25*1000*60L)
     }
-
     private fun startForegroundService(action: String, data: Long) {
         timerEvent.postValue(TimerEvent.START)
-        if(action == ACTION_TIMER_START) {
-            startTimer()
-        }
-        else{
+        if (action == ACTION_TIMER_START) {
+            startTimer(data)
+        } else if (action == ACTION_DOWNTIMER_START) {
             startDownTimer(data)
+        } else if (action == ACTION_POMODORO_TIMER_START) {
+            pomodoroTimer(data)
         }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-
         startForeground(NOTIFICATION_ID, getNotificationBuilder().build())
 
-        timerInMillis.observe(this, Observer {
-            if(!isServiceStopped){
+        timerInMillis.observe(this) {
+            if (!isServiceStopped) {
                 val builder = getNotificationBuilder().setContentText(
                     TimerUtil.getFormattedSecondTime(it, false)
                 )
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             }
-        })
-        timerInMin.observe(this, Observer {
-            if(!isServiceStopped){
+        }
+        timerInMin.observe(this) {
+            if (!isServiceStopped) {
                 val builder = getNotificationBuilder().setContentText(
                     TimerUtil.getFormattedSecondTime(it, true)
                 )
                 notificationManager.notify(NOTIFICATION_ID, builder.build())
             }
-        })
+        }
+        timerPomodoro.observe(this) {
+            if (!isServiceStopped){
+                val builder = getNotificationBuilder().setContentText(
+                    TimerUtil.getFormattedSecondTime(it, true)
+                )
+                notificationManager.notify(NOTIFICATION_ID, builder.build())
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -134,7 +155,6 @@ class TimerService: LifecycleService() {
             },
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-
     private fun stopService(){
         isServiceStopped = true
         initValues()
@@ -142,8 +162,16 @@ class TimerService: LifecycleService() {
         stopForeground(true)
         stopSelf()
     }
-    private fun startTimer(){
-        val timeStarted = System.currentTimeMillis()
+    @RequiresApi(Build.VERSION_CODES.N) //android API 24 higher foreground detach
+    private fun pauseService(){
+        isServiceStopped = true
+        notificationManager.cancel(NOTIFICATION_ID)
+        timerEvent.postValue(TimerEvent.END)
+        stopForeground(Service.STOP_FOREGROUND_DETACH)
+        stopSelf()
+    }
+    private fun startTimer(data: Long){
+        val timeStarted = System.currentTimeMillis() -data * 1000 //(data,second) (millis = second *1000)
         CoroutineScope(Dispatchers.Main).launch{
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.START){
                 lapTime = System.currentTimeMillis() - timeStarted
@@ -163,7 +191,38 @@ class TimerService: LifecycleService() {
                     }
                 }
                 override fun onFinish() {
-                    stopService()   
+                    stopService()
+                }
+            }.start()
+        }
+    }
+    private fun pomodoroTimer(data: Long){
+        var starting: Long = data * 1000
+        CoroutineScope(Dispatchers.Main).launch {
+            object  : CountDownTimer(starting, 1000){
+                override fun onTick(millisUntilFinished: Long) {
+                    if(!isServiceStopped && timerEvent.value!! == TimerEvent.START) {
+                        starting = millisUntilFinished
+                        Log.d("tagst",starting.toString())
+                        timerPomodoro.postValue(starting)
+                    }
+                }
+                override fun onFinish() {
+                    pomodoroRestTimer()
+                }
+            }.start()
+        }
+    }
+    private fun pomodoroRestTimer(){
+        var starting: Long = 1000 * 60 * 5
+        CoroutineScope(Dispatchers.Main).launch {
+            object : CountDownTimer(starting, 1000) {
+                override fun onTick(millisUntilFinished: Long) {
+                    starting = millisUntilFinished
+                    timerPomodoro.postValue(starting)
+                }
+                override fun onFinish() {
+                    stopService()
                 }
             }.start()
         }

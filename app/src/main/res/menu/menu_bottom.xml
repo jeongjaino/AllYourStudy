@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="friend"
-        android:id="@+id/Friend"
+        android:title="Todo"
+        android:id="@+id/Todo"
         android:icon="@drawable/ic_baseline_access_alarm_24"/>
     <item
         android:title="timer"
-        android:id="@+id/Timer"
+        android:id="@+id/pomodoroTimer"
         android:icon="@drawable/ic_baseline_alarm_off_24"/>
     <item
         android:title="Home"

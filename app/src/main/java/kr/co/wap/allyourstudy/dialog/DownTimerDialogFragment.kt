@@ -28,16 +28,16 @@ class DownTimerDialogFragment : DialogFragment() {
         binding.secondPicker.minValue = 0
 
         binding.hourPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            val hour = binding.hourPicker.value
-            binding.hourText.text = hour.toString().plus(":")
+            val hours = binding.hourPicker.value
+            binding.hourText.text = "${if (hours < 10) "0" else ""}$hours:"
         }
         binding.minPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            val min = binding.minPicker.value
-            binding.minText.text = min.toString().plus(":")
+            val minutes = binding.minPicker.value
+            binding.minText.text = "${if (minutes < 10) "0" else ""}$minutes:"
         }
         binding.secondPicker.setOnValueChangedListener { picker, oldVal, newVal ->
-            val second = binding.secondPicker.value
-            binding.secondText.text = second.toString()
+            val seconds = binding.secondPicker.value
+            binding.secondText.text = "${if (seconds < 10) "0" else ""}$seconds"
         }
         binding.buttonYes.setOnClickListener {
             buttonClickListener.onButtonYesClicked()
