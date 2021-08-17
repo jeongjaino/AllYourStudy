@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.FragmentTimerBinding
+import kr.co.wap.allyourstudy.dialog.ResetDialogFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.utils.*
 
@@ -54,7 +55,7 @@ class TimerFragment: Fragment() {
         }
     }
     private fun upTimerReset(){
-        sendCommandToService(ACTION_TIMER_STOP, 0)
+        resetDialog()
     }
     private fun updateUi(event: TimerEvent){
         when (event) {
@@ -62,7 +63,7 @@ class TimerFragment: Fragment() {
                 isTimerRunning = true
                 binding.upTimerStartButton.text = "PAUSE"
             }
-            is TimerEvent.END -> {
+            is TimerEvent.END, TimerEvent.POMODORO_END -> {
                 isTimerRunning = false
                 binding.upTimerStartButton.text = "START"
             }
@@ -73,5 +74,14 @@ class TimerFragment: Fragment() {
             this.action = action
             this.putExtra("data",data)
         })
+    }
+    private fun resetDialog(){
+        val dialog = ResetDialogFragment()
+        dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
+            override fun onButtonYesClicked() {
+                sendCommandToService(ACTION_TIMER_STOP, 0)
+            }
+        })
+        dialog.show(activity?.supportFragmentManager!!, "resetDialog")
     }
 }

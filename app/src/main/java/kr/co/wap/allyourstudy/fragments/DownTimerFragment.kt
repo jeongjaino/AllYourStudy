@@ -10,11 +10,9 @@ import android.view.ViewGroup
 import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.FragmentDownTimerBinding
 import kr.co.wap.allyourstudy.dialog.DownTimerDialogFragment
+import kr.co.wap.allyourstudy.dialog.ResetDialogFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
-import kr.co.wap.allyourstudy.utils.ACTION_DOWNTIMER_START
-import kr.co.wap.allyourstudy.utils.ACTION_DOWNTIMER_STOP
-import kr.co.wap.allyourstudy.utils.ACTION_TIMER_PAUSE
-import kr.co.wap.allyourstudy.utils.TimerUtil
+import kr.co.wap.allyourstudy.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -36,7 +34,7 @@ class DownTimerFragment : Fragment() {
             }
         }
         binding.downTimerResetButton.setOnClickListener{
-            resetTimer()
+            resetDialog()
         }
         setObservers()
         return binding.root
@@ -68,7 +66,7 @@ class DownTimerFragment : Fragment() {
                 isTimerRunning = true
                 binding.downTimerStartButton.text = "PAUSE"
             }
-            is TimerEvent.END -> {
+            is TimerEvent.END, TimerEvent.POMODORO_END -> {
                 isTimerRunning = false
                 binding.downTimerStartButton.text = "START"
             }
@@ -100,5 +98,15 @@ class DownTimerFragment : Fragment() {
             this.action = action
             this.putExtra("data",data)
         })
+    }
+    private fun resetDialog(){
+        val dialog = ResetDialogFragment()
+        dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
+            override fun onButtonYesClicked() {
+                sendCommandToService(ACTION_DOWNTIMER_STOP,0)
+                binding.downTimerProgress.progress = 0
+            }
+        })
+        dialog.show(activity?.supportFragmentManager!!, "resetDialog")
     }
 }

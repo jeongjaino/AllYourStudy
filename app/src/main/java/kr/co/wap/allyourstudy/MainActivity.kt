@@ -31,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     }
     override fun onStart(){
         super.onStart()
-        binding.cardView.visibility= View.VISIBLE
         binding.bottomBar.visibility = View.VISIBLE
         initNavBar(binding.bottomBar)
     }
@@ -62,7 +61,11 @@ class MainActivity : AppCompatActivity() {
             binding.shareTimer.text = currentTime //timer
         }
         TimerService.timerInMin.observe(this){
-            val currentTime = TimerUtil.getFormattedSecondTime(it, true)
+            currentTime = TimerUtil.getFormattedSecondTime(it, true)
+            binding.shareTimer.text = currentTime
+        }
+        TimerService.timerPomodoro.observe(this){
+            currentTime = TimerUtil.getFormattedSecondTime(it, true)
             binding.shareTimer.text = currentTime
         }
     }
@@ -77,10 +80,10 @@ class MainActivity : AppCompatActivity() {
         binding.cardView.visibility = View.GONE
         binding.bottomBar.visibility = View.GONE
     }
-    fun goYouTube(){
+    private fun goYouTube(){
         replaceFragment(youtubeFragment)
     }
-    fun goHome(){
+    private fun goHome(){
         replaceFragment(homeFragment)
     }
 }

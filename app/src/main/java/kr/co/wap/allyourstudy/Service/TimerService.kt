@@ -74,6 +74,9 @@ class TimerService: LifecycleService() {
                 ACTION_CUMULATIVE_TIMER_START ->{
                     startCumulativeTimer(it.getLongExtra("data",-1))
                 }
+                ACTION_POMODORO_REST_TIMER_START ->{
+                    pomodoroRestTimer()
+                }
                 else -> {}
             }
         }
@@ -215,18 +218,25 @@ class TimerService: LifecycleService() {
                     }
                 }
                 override fun onFinish() {
-                    pomodoroRestTimer()
+                    timerEvent.postValue(TimerEvent.POMODORO_END)
+                    isServiceStopped = true
+                    timerPomodoro.postValue(5*1000*60L)
+                    notificationManager.cancel(NOTIFICATION_ID)
+                    stopForeground(true)
+                    stopSelf()
                 }
             }.start()
         }
     }
     private fun pomodoroRestTimer(){
-        var starting: Long = 1000 * 60 * 5
+        var starting: Long = 1000 * 60 * 5 + 50
         CoroutineScope(Dispatchers.Main).launch {
             object : CountDownTimer(starting, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
-                    starting = millisUntilFinished
-                    timerPomodoro.postValue(starting)
+                    if(!isServiceStopped && timerEvent.value!! == TimerEvent.START) {
+                        starting = millisUntilFinished
+                        timerPomodoro.postValue(starting)
+                    }
                 }
                 override fun onFinish() {
                     stopService()
