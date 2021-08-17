@@ -30,6 +30,7 @@ class TimerService: LifecycleService() {
         val timerInMillis = MutableLiveData<Long>()
         val timerInMin = MutableLiveData<Long>()
         val timerPomodoro = MutableLiveData<Long>()
+        val cumulativeTimer = MutableLiveData<Long>()
     }
 
     private lateinit var notificationManager: NotificationManagerCompat
@@ -42,7 +43,6 @@ class TimerService: LifecycleService() {
         notificationManager = NotificationManagerCompat.from(this)
         //initValues
     }
-
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         intent?.let {
@@ -71,7 +71,10 @@ class TimerService: LifecycleService() {
                 ACTION_TIMER_PAUSE ->{
                     pauseService()
                 }
-                else -> {Log.d("Tag","else")}
+                ACTION_CUMULATIVE_TIMER_START ->{
+                    startCumulativeTimer(it.getLongExtra("data",-1))
+                }
+                else -> {}
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -85,14 +88,17 @@ class TimerService: LifecycleService() {
     }
     private fun startForegroundService(action: String, data: Long) {
         timerEvent.postValue(TimerEvent.START)
-        if (action == ACTION_TIMER_START) {
-            startTimer(data)
-        } else if (action == ACTION_DOWNTIMER_START) {
-            startDownTimer(data)
-        } else if (action == ACTION_POMODORO_TIMER_START) {
-            pomodoroTimer(data)
+        when (action) {
+            ACTION_TIMER_START -> {
+                startTimer(data)
+            }
+            ACTION_DOWNTIMER_START -> {
+                startDownTimer(data)
+            }
+            ACTION_POMODORO_TIMER_START -> {
+                pomodoroTimer(data)
+            }
         }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
@@ -171,7 +177,7 @@ class TimerService: LifecycleService() {
         stopSelf()
     }
     private fun startTimer(data: Long){
-        val timeStarted = System.currentTimeMillis() -data * 1000 //(data,second) (millis = second *1000)
+        val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
         CoroutineScope(Dispatchers.Main).launch{
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.START){
                 lapTime = System.currentTimeMillis() - timeStarted
@@ -181,12 +187,13 @@ class TimerService: LifecycleService() {
         }
     }
     private fun startDownTimer(data: Long){
-        var starting = data*1000
+        var starting = data * 1000 + 50 // 50이 수가 전달되면서 소실되는 값
         CoroutineScope(Dispatchers.Main).launch {
             object : CountDownTimer(starting, 1000) {
                 override fun onTick(millisUntilFinished: Long) {
                     if(!isServiceStopped && timerEvent.value!! == TimerEvent.START) {
                         starting = millisUntilFinished
+                        Log.d("downTimer",starting.toString())
                         timerInMin.postValue(starting)
                     }
                 }
@@ -197,13 +204,13 @@ class TimerService: LifecycleService() {
         }
     }
     private fun pomodoroTimer(data: Long){
-        var starting: Long = data * 1000
+        var starting: Long = data * 1000 + 50
         CoroutineScope(Dispatchers.Main).launch {
             object  : CountDownTimer(starting, 1000){
                 override fun onTick(millisUntilFinished: Long) {
                     if(!isServiceStopped && timerEvent.value!! == TimerEvent.START) {
                         starting = millisUntilFinished
-                        Log.d("tagst",starting.toString())
+                        Log.d("pomodoro",starting.toString())
                         timerPomodoro.postValue(starting)
                     }
                 }
@@ -225,6 +232,16 @@ class TimerService: LifecycleService() {
                     stopService()
                 }
             }.start()
+        }
+    }
+    private fun startCumulativeTimer(data: Long){
+        val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
+        CoroutineScope(Dispatchers.Main).launch{
+            while(!isServiceStopped && timerEvent.value!! == TimerEvent.START){
+                lapTime = System.currentTimeMillis() - timeStarted
+                cumulativeTimer.postValue(lapTime)
+                delay(1000L)
+            }
         }
     }
 }

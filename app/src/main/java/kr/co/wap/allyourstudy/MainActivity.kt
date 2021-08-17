@@ -10,6 +10,7 @@ import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
 import kr.co.wap.allyourstudy.fragments.HomeFragment
 import kr.co.wap.allyourstudy.fragments.YoutubeFragment
+import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.utils.TimerUtil
 import java.util.*
 
@@ -49,6 +50,12 @@ class MainActivity : AppCompatActivity() {
     }
     private fun setObservers(){
         TimerService.timerEvent.observe(this){
+            if(it == TimerEvent.END){
+                binding.cardView.visibility = View.GONE
+            }
+            else{
+                binding.cardView.visibility = View.VISIBLE
+            }
         }
         TimerService.timerInMillis.observe(this) {
             currentTime = TimerUtil.getFormattedSecondTime(it, false)
@@ -60,11 +67,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
     private fun replaceFragment(fragment: Fragment){
-        if(fragment != null){
-            val transaction = supportFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragmentContainer , fragment)
-            transaction.commit()
-        }
+        val transaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.fragmentContainer , fragment)
+        transaction.commit()
     }
     fun goTimer(){
         val intent = Intent(this, TimerActivity::class.java)

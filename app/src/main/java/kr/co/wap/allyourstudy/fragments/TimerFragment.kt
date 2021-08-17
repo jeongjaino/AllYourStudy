@@ -38,6 +38,7 @@ class TimerFragment: Fragment() {
     }
     private fun setObservers(){
         TimerService.timerEvent.observe(viewLifecycleOwner){
+            Log.d("event",it.toString())
             updateUi(it)
         }
         TimerService.timerInMillis.observe(viewLifecycleOwner) {
@@ -55,12 +56,6 @@ class TimerFragment: Fragment() {
     private fun upTimerReset(){
         sendCommandToService(ACTION_TIMER_STOP, 0)
     }
-    private fun sendCommandToService(action: String, data: Long) {
-        activity?.startService(Intent(activity, TimerService::class.java).apply {
-            this.action = action
-            this.putExtra("data",data)
-        })
-    }
     private fun updateUi(event: TimerEvent){
         when (event) {
             is TimerEvent.START -> {
@@ -72,5 +67,11 @@ class TimerFragment: Fragment() {
                 binding.upTimerStartButton.text = "START"
             }
         }
+    }
+    private fun sendCommandToService(action: String, data: Long) {
+        activity?.startService(Intent(activity, TimerService::class.java).apply {
+            this.action = action
+            this.putExtra("data",data)
+        })
     }
 }

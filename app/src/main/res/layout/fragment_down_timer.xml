@@ -20,6 +20,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/downTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="16dp"
+                android:text="00:00:00"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
@@ -66,18 +78,5 @@
         android:text="Start"
         app:layout_constraintEnd_toStartOf="@+id/downTimer_reset_button"
         app:layout_constraintTop_toBottomOf="@+id/downTimer_progress" />
-
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/downTimer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginBottom="32dp"
-        android:padding="16dp"
-        android:text="00:00:00"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/downTimer_progress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

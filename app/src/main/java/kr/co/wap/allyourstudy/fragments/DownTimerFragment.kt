@@ -2,6 +2,7 @@ package kr.co.wap.allyourstudy.fragments
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -57,6 +58,10 @@ class DownTimerFragment : Fragment() {
             sendCommandToService(ACTION_TIMER_PAUSE,0)
         }
     }
+    private fun resetTimer(){
+        sendCommandToService(ACTION_DOWNTIMER_STOP,0)
+        binding.downTimerProgress.progress = 0
+    }
     private fun updateUi(event: TimerEvent){
         when (event) {
             is TimerEvent.START -> {
@@ -68,12 +73,6 @@ class DownTimerFragment : Fragment() {
                 binding.downTimerStartButton.text = "START"
             }
         }
-    }
-    private fun sendCommandToService(action: String, data: Long) {
-        activity?.startService(Intent(activity, TimerService::class.java).apply {
-            this.action = action
-            this.putExtra("data",data)
-        })
     }
     private fun timeDialog() {
         val cal = Calendar.getInstance()
@@ -90,13 +89,16 @@ class DownTimerFragment : Fragment() {
                 val timeInSecond = hour * 3600 + minute * 60 + second
                 binding.downTimer.text = SimpleDateFormat("HH:mm:ss").format(cal.time)
                 binding.downTimerProgress.max = timeInSecond
+                Log.d("timeInSecond",timeInSecond.toString())
                 toggleDownTimer(timeInSecond.toLong())
             }
         })
         dialog.show(activity?.supportFragmentManager!!, "InsertDialog")
     }
-    private fun resetTimer(){
-        sendCommandToService(ACTION_DOWNTIMER_STOP,0)
-        binding.downTimerProgress.progress = 0
+    private fun sendCommandToService(action: String, data: Long) {
+        activity?.startService(Intent(activity, TimerService::class.java).apply {
+            this.action = action
+            this.putExtra("data",data)
+        })
     }
 }

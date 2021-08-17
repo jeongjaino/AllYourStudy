@@ -7,6 +7,7 @@ const val ACTION_DOWNTIMER_STOP = "Action_DownTimer_Stop"
 const val ACTION_POMODORO_TIMER_START ="Action_PomodoroTimer_Start"
 const val ACTION_POMODORO_TIMER_STOP ="Action_PomodoroTimer_Stop"
 const val ACTION_TIMER_PAUSE ="Action_Timer_Pause"
+const val ACTION_CUMULATIVE_TIMER_START = "Action_Cumulative_Timer_Start"
 
 const val NOTIFICATION_CHANNEL_ID = "timer_channel_id"
 const val NOTIFICATION_CHANNEL_NAME = "timer_channel"

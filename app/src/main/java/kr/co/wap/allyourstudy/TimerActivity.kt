@@ -1,18 +1,26 @@
 package kr.co.wap.allyourstudy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.tabs.TabLayoutMediator
+import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.adapter.FragmentAdapter
 import kr.co.wap.allyourstudy.databinding.ActivityTimerBinding
 import kr.co.wap.allyourstudy.fragments.DownTimerFragment
 import kr.co.wap.allyourstudy.fragments.PomodoroFragment
 import kr.co.wap.allyourstudy.fragments.TimerFragment
+import kr.co.wap.allyourstudy.model.TimerEvent
+import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_START
+import kr.co.wap.allyourstudy.utils.TimerUtil
+import java.text.SimpleDateFormat
+import java.util.*
 
 class TimerActivity : AppCompatActivity() {
 
@@ -34,6 +42,7 @@ class TimerActivity : AppCompatActivity() {
 
         initNavBar(binding.bottomNavigationView)
         viewPagerMenu()
+        setObservers()
     }
     private fun initNavBar(navbar: BottomNavigationView){
         navbar.run{
@@ -56,10 +65,24 @@ class TimerActivity : AppCompatActivity() {
             }
         )
     }
-    /*private fun weekResetTime(){
-    binding.cumulativeCycleTime.text = TimerUtil.getFormattedTime(cumulativeCycleTime)
-                cumulativeCycleTime += 1
-    private var cumulativeCycleTime: Long = 1
+    private fun setObservers() {
+        TimerService.timerEvent.observe(this) {
+            val timerText = binding.cumulativeCycleTimer.text
+            if (it == TimerEvent.START) {
+                sendCommandToService(ACTION_CUMULATIVE_TIMER_START,TimerUtil.getLongTimer(timerText.toString()))
+            }
+        }
+        TimerService.cumulativeTimer.observe(this){
+            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it,false)
+        }
+    }
+    private fun sendCommandToService(action: String, data: Long) {
+        this.startService(Intent(this, TimerService::class.java).apply {
+            this.action = action
+            this.putExtra("data",data)
+        })
+    }
+    private fun weekResetTime(){
         val currentTime = Calendar.getInstance().time
         val weekdayFormat = SimpleDateFormat("EE", Locale.getDefault())
         val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
@@ -67,8 +90,8 @@ class TimerActivity : AppCompatActivity() {
         val weekday = weekdayFormat.format(currentTime)
         val time = timeFormat.format(currentTime)
 
-        if(weekday == "월" && time == "12:32:00"){
-            cumulativeCycleTime = 0
+        if(weekday == "월" && time == "07:00:00"){
+
         }
-    }*/
+    }
 }
