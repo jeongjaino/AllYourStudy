@@ -20,10 +20,10 @@
             app:backgroundTint="#4CAF50"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reset_dialog_text" />
+            app:layout_constraintTop_toBottomOf="@+id/rest_dialog_text" />
 
         <TextView
-            android:id="@+id/reset_dialog_text"
+            android:id="@+id/rest_dialog_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"

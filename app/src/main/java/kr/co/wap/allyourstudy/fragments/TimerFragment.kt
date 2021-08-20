@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import kr.co.wap.allyourstudy.Service.TimerService
+import kr.co.wap.allyourstudy.service.UpTimerService
 import kr.co.wap.allyourstudy.databinding.FragmentTimerBinding
 import kr.co.wap.allyourstudy.dialog.ResetDialogFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
@@ -32,45 +32,40 @@ class TimerFragment: Fragment() {
             }
         }
         binding.upTimerResetButton.setOnClickListener{
-            upTimerReset()
+            resetDialog()
         }
         setObservers()
         return binding.root
     }
     private fun setObservers(){
-        TimerService.timerEvent.observe(viewLifecycleOwner){
-            Log.d("event",it.toString())
+        UpTimerService.timerEvent.observe(viewLifecycleOwner){
             updateUi(it)
         }
-        TimerService.timerInMillis.observe(viewLifecycleOwner) {
-            Log.d("tag",it.toString())
+        UpTimerService.upTimer.observe(viewLifecycleOwner) {
             binding.upTimer.text = TimerUtil.getFormattedSecondTime(it, false)
         }
     }
     private fun toggleTimer(data: Long){
         if (!isTimerRunning) {
-            sendCommandToService(ACTION_TIMER_START, data)
+            sendCommandToService(ACTION_UP_TIMER_START, data)
         } else {
-            sendCommandToService(ACTION_TIMER_PAUSE, data)
+            sendCommandToService(ACTION_UP_TIMER_PAUSE, data)
         }
-    }
-    private fun upTimerReset(){
-        resetDialog()
     }
     private fun updateUi(event: TimerEvent){
         when (event) {
-            is TimerEvent.START -> {
+            is TimerEvent.UpTimerStart -> {
                 isTimerRunning = true
                 binding.upTimerStartButton.text = "PAUSE"
             }
-            is TimerEvent.END, TimerEvent.POMODORO_END -> {
+            is TimerEvent.UpTimerStop -> {
                 isTimerRunning = false
                 binding.upTimerStartButton.text = "START"
             }
         }
     }
     private fun sendCommandToService(action: String, data: Long) {
-        activity?.startService(Intent(activity, TimerService::class.java).apply {
+        activity?.startService(Intent(activity, UpTimerService::class.java).apply {
             this.action = action
             this.putExtra("data",data)
         })
@@ -79,7 +74,7 @@ class TimerFragment: Fragment() {
         val dialog = ResetDialogFragment()
         dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
             override fun onButtonYesClicked() {
-                sendCommandToService(ACTION_TIMER_STOP, 0)
+                sendCommandToService(ACTION_UP_TIMER_STOP, 0)
             }
         })
         dialog.show(activity?.supportFragmentManager!!, "resetDialog")

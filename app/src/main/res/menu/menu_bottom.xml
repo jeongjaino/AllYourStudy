@@ -13,8 +13,8 @@
         android:id="@+id/Home"
         android:icon="@drawable/ic_baseline_home_24"/>
     <item
-        android:title="Calendar"
-        android:id="@+id/Calendar"
+        android:title="친구"
+        android:id="@+id/Friend"
         android:icon="@drawable/ic_baseline_play_circle_filled_24"/>
     <item
         android:title="Youtube"

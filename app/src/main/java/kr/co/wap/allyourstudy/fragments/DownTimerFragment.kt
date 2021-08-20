@@ -7,11 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kr.co.wap.allyourstudy.Service.TimerService
 import kr.co.wap.allyourstudy.databinding.FragmentDownTimerBinding
 import kr.co.wap.allyourstudy.dialog.DownTimerDialogFragment
 import kr.co.wap.allyourstudy.dialog.ResetDialogFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
+import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.utils.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -40,33 +40,29 @@ class DownTimerFragment : Fragment() {
         return binding.root
     }
     private fun setObservers(){
-        TimerService.timerEvent.observe(viewLifecycleOwner){
+        DownTimerService.timerEvent.observe(viewLifecycleOwner){
             updateUi(it)
         }
-        TimerService.timerInMin.observe(viewLifecycleOwner){
+        DownTimerService.downTimer.observe(viewLifecycleOwner){
             binding.downTimer.text = TimerUtil.getFormattedSecondTime(it, true)
             binding.downTimerProgress.progress = (it/1000).toInt()
         }
     }
     private fun toggleDownTimer(setTime: Long){
         if(!isTimerRunning){
-            sendCommandToService(ACTION_DOWNTIMER_START,setTime)
+            sendCommandToService(ACTION_DOWN_TIMER_START,setTime)
         }
         else{
-            sendCommandToService(ACTION_TIMER_PAUSE,0)
+            sendCommandToService(ACTION_DOWN_TIMER_PAUSE,0)
         }
-    }
-    private fun resetTimer(){
-        sendCommandToService(ACTION_DOWNTIMER_STOP,0)
-        binding.downTimerProgress.progress = 0
     }
     private fun updateUi(event: TimerEvent){
         when (event) {
-            is TimerEvent.START -> {
+            is TimerEvent.DownTimerStart -> {
                 isTimerRunning = true
                 binding.downTimerStartButton.text = "PAUSE"
             }
-            is TimerEvent.END, TimerEvent.POMODORO_END -> {
+            is TimerEvent.DownTimerStop -> {
                 isTimerRunning = false
                 binding.downTimerStartButton.text = "START"
             }
@@ -94,7 +90,7 @@ class DownTimerFragment : Fragment() {
         dialog.show(activity?.supportFragmentManager!!, "InsertDialog")
     }
     private fun sendCommandToService(action: String, data: Long) {
-        activity?.startService(Intent(activity, TimerService::class.java).apply {
+        activity?.startService(Intent(activity, DownTimerService::class.java).apply {
             this.action = action
             this.putExtra("data",data)
         })
@@ -103,7 +99,7 @@ class DownTimerFragment : Fragment() {
         val dialog = ResetDialogFragment()
         dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
             override fun onButtonYesClicked() {
-                sendCommandToService(ACTION_DOWNTIMER_STOP,0)
+                sendCommandToService(ACTION_DOWN_TIMER_STOP,0)
                 binding.downTimerProgress.progress = 0
             }
         })

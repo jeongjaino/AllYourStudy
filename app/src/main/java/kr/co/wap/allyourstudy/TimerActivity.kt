@@ -4,20 +4,20 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.fragment.app.Fragment
-import androidx.viewpager.widget.ViewPager
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.tabs.TabLayoutMediator
-import kr.co.wap.allyourstudy.Service.TimerService
+import kotlinx.coroutines.flow.SharingCommand
+import kr.co.wap.allyourstudy.service.UpTimerService
 import kr.co.wap.allyourstudy.adapter.FragmentAdapter
 import kr.co.wap.allyourstudy.databinding.ActivityTimerBinding
 import kr.co.wap.allyourstudy.fragments.DownTimerFragment
 import kr.co.wap.allyourstudy.fragments.PomodoroFragment
 import kr.co.wap.allyourstudy.fragments.TimerFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
+import kr.co.wap.allyourstudy.service.DownTimerService
+import kr.co.wap.allyourstudy.service.PomodoroService
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_START
+import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_STOP
 import kr.co.wap.allyourstudy.utils.TimerUtil
 import java.text.SimpleDateFormat
 import java.util.*
@@ -30,12 +30,17 @@ class TimerActivity : AppCompatActivity() {
     private val downTimerFragment = DownTimerFragment()
     private val pomodoroFragment = PomodoroFragment()
 
+    private var upTimerEvent: TimerEvent = TimerEvent.UpTimerStop
+    private var downTimerEvent: TimerEvent = TimerEvent.DownTimerStop
+    private var pomodoroTimerEvent: TimerEvent = TimerEvent.PomodoroTimerStop
+
+    private var isTimerRunning = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        var fragmentList = listOf(timerFragment, downTimerFragment, pomodoroFragment)
+        val fragmentList = listOf(timerFragment, downTimerFragment, pomodoroFragment)
         val adapter = FragmentAdapter(this)
         adapter.fragmentList = fragmentList
         binding.viewPager.adapter = adapter
@@ -43,6 +48,8 @@ class TimerActivity : AppCompatActivity() {
         initNavBar(binding.bottomNavigationView)
         viewPagerMenu()
         setObservers()
+        setEventObservers()
+        weekResetTime()
     }
     private fun initNavBar(navbar: BottomNavigationView){
         navbar.run{
@@ -65,19 +72,44 @@ class TimerActivity : AppCompatActivity() {
             }
         )
     }
-    private fun setObservers() {
-        TimerService.timerEvent.observe(this) {
-            val timerText = binding.cumulativeCycleTimer.text
-            if (it == TimerEvent.START) {
-                sendCommandToService(ACTION_CUMULATIVE_TIMER_START,TimerUtil.getLongTimer(timerText.toString()))
-            }
+    private fun setEventObservers() {
+        UpTimerService.timerEvent.observe(this){
+            upTimerEvent = it
+            cumulativeCycleTimer()
         }
-        TimerService.cumulativeTimer.observe(this){
-            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it,false)
+        DownTimerService.timerEvent.observe(this){
+            downTimerEvent = it
+            cumulativeCycleTimer()
+        }
+        PomodoroService.timerEvent.observe(this){
+            pomodoroTimerEvent = it
+            cumulativeCycleTimer()
+        }
+    }
+    private fun setObservers(){
+        UpTimerService.cumulativeTimer.observe(this){
+            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
+            weekResetTime()
+            Log.d("atm",it.toString())
+        }
+        UpTimerService.CCTEvent.observe(this){
+            isTimerRunning = it == TimerEvent.CumulativeTimerStart
+        }
+    }
+    private fun cumulativeCycleTimer() {
+        if (upTimerEvent == TimerEvent.UpTimerStop && downTimerEvent == TimerEvent.DownTimerStop
+            && pomodoroTimerEvent != TimerEvent.PomodoroTimerStart
+        ) {
+            sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)
+        } else {
+            if(!isTimerRunning) {
+                val timer = binding.cumulativeCycleTimer.text.toString()
+                sendCommandToService(ACTION_CUMULATIVE_TIMER_START, TimerUtil.getLongTimer(timer))
+            }
         }
     }
     private fun sendCommandToService(action: String, data: Long) {
-        this.startService(Intent(this, TimerService::class.java).apply {
+        this.startService(Intent(this, UpTimerService::class.java).apply {
             this.action = action
             this.putExtra("data",data)
         })
@@ -91,7 +123,7 @@ class TimerActivity : AppCompatActivity() {
         val time = timeFormat.format(currentTime)
 
         if(weekday == "월" && time == "07:00:00"){
-
+            binding.cumulativeCycleTimer.text = "00:00:00"
         }
     }
 }

@@ -12,7 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
         <service
-            android:name=".Service.TimerService"
+            android:name=".service.UpTimerService"
+            android:enabled="true"
+            android:exported="true" />
+        <service android:name=".service.PomodoroService"
+            android:enabled="true"
+            android:exported="true" />
+        <service android:name=".service.DownTimerService"
             android:enabled="true"
             android:exported="true" />
         <activity
