@@ -1,15 +1,18 @@
 package kr.co.wap.allyourstudy
 
 import android.annotation.SuppressLint
+import android.content.ClipDescription
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.DragEvent
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -36,16 +39,13 @@ class MainActivity : AppCompatActivity(){
     private val green = ColorStateList.valueOf(Color.rgb(100,250,100))
     private val blue = ColorStateList.valueOf(Color.rgb(100,100,250))
 
-    private var startX = 0f
-    private var startY = 0f
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         setObservers()
         dragAndDrop()
     }
+
     override fun onStart(){
         super.onStart()
         initNavBar(binding.bottomBar)
@@ -66,17 +66,39 @@ class MainActivity : AppCompatActivity(){
     @SuppressLint("ClickableViewAccessibility")
     private fun dragAndDrop(){
         binding.cardView.setOnTouchListener{v, event ->
+            val containerHeight = binding.fragmentContainer.height
+            val containerWidth = binding.fragmentContainer.width
+            val cardHeight = binding.cardView.height
+            val cardWidth = binding.cardView.width
+            var startX = 0f
+            var startY = 0f
+
             when(event.action){
                 MotionEvent.ACTION_DOWN ->{
                     startX = event.x
                     startY = event.y
                 }
                 MotionEvent.ACTION_MOVE ->{
-                    val movedX: Float = event.x - startX
-                    val movedY: Float = event.y - startY
+                    var movedX: Float = event.x - startX
+                    var movedY: Float = event.y - startY
 
                     v.x = v.x + movedX
                     v.y = v.y + movedY
+
+                    if(v.x < 0){
+                        v.x = 0f
+                    }
+                    if(v.x > containerWidth-cardWidth){
+                        v.x = containerWidth-cardWidth.toFloat()
+                    }
+                    if(v.y < 0){
+                        v.y = 0f
+                    }
+                    if(v.y > containerHeight-cardHeight){
+                        v.y = containerHeight-cardHeight.toFloat()
+                    }
+                    binding.cardView.x = v.x
+                    binding.cardView.y = v.y
                 }
             }
             true

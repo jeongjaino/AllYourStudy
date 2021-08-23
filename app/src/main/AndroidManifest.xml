@@ -11,25 +11,24 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
+        <activity android:name=".LoginActivity"></activity>
+
         <service
             android:name=".service.UpTimerService"
             android:enabled="true"
             android:exported="true" />
-        <service android:name=".service.PomodoroService"
+        <service
+            android:name=".service.PomodoroService"
             android:enabled="true"
             android:exported="true" />
-        <service android:name=".service.DownTimerService"
+        <service
+            android:name=".service.DownTimerService"
             android:enabled="true"
             android:exported="true" />
+
         <activity
             android:name=".SplashActivity"
-            android:theme="@style/SplashScreenTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/SplashScreenTheme"></activity>
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AllYourStudy">
@@ -42,13 +41,7 @@
         <activity
             android:name=".TimerActivity"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/Theme.AllYourStudy" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:theme="@style/Theme.AllYourStudy"></activity>
     </application>
 
 </manifest>

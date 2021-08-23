@@ -92,24 +92,6 @@ class PomodoroFragment : Fragment() {
         binding.pomodoroProgress.setProgressStartColor(Color.BLUE)
         binding.pomodoroProgress.setProgressEndColor(Color.BLUE)
     }
-    /*private fun setPomodoroRestTimer(){
-        binding.pomodoroProgress.max = 5 * 60
-        binding.pomodoroProgress.setProgressStartColor(Color.BLUE)
-        binding.pomodoroProgress.setProgressEndColor(Color.BLUE)
-        binding.pomodoroStartButton.visibility = View.GONE
-        binding.pomodoroResetButton.visibility = View.GONE
-    }
-    private fun pomdoroRestDialog(){
-        val dialog = PomodoroRestDialogFragment()
-        dialog.setButtonClickListener(object : PomodoroRestDialogFragment.OnButtonClickListener {
-            override fun onButtonYesClicked() {
-                setPomodoroRestTimer()
-                sendCommandToService(ACTION_POMODORO_REST_TIMER_START,0)
-                Log.d("tag2","click")
-            }
-        })
-        dialog.show(activity?.supportFragmentManager!!, "RestDialog")
-    }*/
     private fun resetDialog(){
         val dialog = ResetDialogFragment()
         dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
