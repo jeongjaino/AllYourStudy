@@ -14,7 +14,6 @@ const val ACTION_DOWN_TIMER_PAUSE = "Action_DownTimer_Pause"
 const val ACTION_POMODORO_TIMER_START ="Action_PomodoroTimer_Start"
 const val ACTION_POMODORO_TIMER_STOP ="Action_PomodoroTimer_Stop"
 const val ACTION_POMODORO_TIMER_PAUSE = "Action_PomodoroTimer_Pause"
-const val ACTION_POMODORO_REST_TIMER_START = "Action_Pomodoro_Timer_Start"
 
 const val ACTION_CUMULATIVE_TIMER_START = "Action_Cumulative_Timer_Start"
 const val ACTION_CUMULATIVE_TIMER_STOP = "Action_Cumulative_Timer_Stop"
@@ -24,3 +23,4 @@ const val NOTIFICATION_CHANNEL_NAME = "timer_channel"
 const val UP_TIMER_NOTIFICATION_ID = 143
 const val DOWN_TIMER_NOTIFICATION_ID = 144
 const val POMODORO_TIMER_NOTIFICATION_ID = 145
+const val CCT_TIMER_NOTIFICATION_ID = 146

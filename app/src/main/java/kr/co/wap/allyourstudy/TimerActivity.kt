@@ -14,6 +14,7 @@ import kr.co.wap.allyourstudy.fragments.DownTimerFragment
 import kr.co.wap.allyourstudy.fragments.PomodoroFragment
 import kr.co.wap.allyourstudy.fragments.TimerFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
+import kr.co.wap.allyourstudy.service.CCTService
 import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.service.PomodoroService
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_START
@@ -34,8 +35,6 @@ class TimerActivity : AppCompatActivity() {
     private var downTimerEvent: TimerEvent = TimerEvent.DownTimerStop
     private var pomodoroTimerEvent: TimerEvent = TimerEvent.PomodoroTimerStop
 
-    private var isTimerRunning = false
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -47,8 +46,8 @@ class TimerActivity : AppCompatActivity() {
 
         initNavBar(binding.bottomNavigationView)
         viewPagerMenu()
-        setObservers()
         setEventObservers()
+        setObservers()
         weekResetTime()
     }
     private fun initNavBar(navbar: BottomNavigationView){
@@ -73,43 +72,38 @@ class TimerActivity : AppCompatActivity() {
         )
     }
     private fun setEventObservers() {
-        UpTimerService.timerEvent.observe(this){
-            upTimerEvent = it
+        DownTimerService.timerEvent.observe(this){
             cumulativeCycleTimer()
         }
-        DownTimerService.timerEvent.observe(this){
-            downTimerEvent = it
+        UpTimerService.timerEvent.observe(this){
             cumulativeCycleTimer()
         }
         PomodoroService.timerEvent.observe(this){
-            pomodoroTimerEvent = it
             cumulativeCycleTimer()
         }
     }
     private fun setObservers(){
-        UpTimerService.cumulativeTimer.observe(this){
+        CCTService.cumulativeTimer.observe(this){
             binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
             weekResetTime()
-            Log.d("atm",it.toString())
-        }
-        UpTimerService.CCTEvent.observe(this){
-            isTimerRunning = it == TimerEvent.CumulativeTimerStart
         }
     }
     private fun cumulativeCycleTimer() {
-        if (upTimerEvent == TimerEvent.UpTimerStop && downTimerEvent == TimerEvent.DownTimerStop
-            && pomodoroTimerEvent != TimerEvent.PomodoroTimerStart
+        if (UpTimerService.timerEvent.value == TimerEvent.UpTimerStop &&
+            DownTimerService.timerEvent.value == TimerEvent.DownTimerStop &&
+            PomodoroService.timerEvent.value != TimerEvent.PomodoroTimerStart
         ) {
             sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)
         } else {
-            if(!isTimerRunning) {
+            if(CCTService.timerEvent.value != TimerEvent.CumulativeTimerStart) {
+                Log.d("Tag","start")
                 val timer = binding.cumulativeCycleTimer.text.toString()
                 sendCommandToService(ACTION_CUMULATIVE_TIMER_START, TimerUtil.getLongTimer(timer))
             }
         }
     }
     private fun sendCommandToService(action: String, data: Long) {
-        this.startService(Intent(this, UpTimerService::class.java).apply {
+        this.startService(Intent(this, CCTService::class.java).apply {
             this.action = action
             this.putExtra("data",data)
         })

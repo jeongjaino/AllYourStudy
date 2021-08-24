@@ -39,6 +39,9 @@ class MainActivity : AppCompatActivity(){
     private val green = ColorStateList.valueOf(Color.rgb(100,250,100))
     private val blue = ColorStateList.valueOf(Color.rgb(100,100,250))
 
+    var startX = 0f
+    var startY = 0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -70,8 +73,6 @@ class MainActivity : AppCompatActivity(){
             val containerWidth = binding.fragmentContainer.width
             val cardHeight = binding.cardView.height
             val cardWidth = binding.cardView.width
-            var startX = 0f
-            var startY = 0f
 
             when(event.action){
                 MotionEvent.ACTION_DOWN ->{

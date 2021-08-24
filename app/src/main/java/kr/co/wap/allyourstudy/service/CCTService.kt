@@ -19,25 +19,24 @@ import kr.co.wap.allyourstudy.TimerActivity
 import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.utils.*
 
-class UpTimerService: LifecycleService() {
-
-    companion object {
+class CCTService: LifecycleService() {
+    companion object{
+        val cumulativeTimer = MutableLiveData<Long>()
         val timerEvent = MutableLiveData<TimerEvent>()
-        val upTimer = MutableLiveData<Long>()
     }
-    private lateinit var notificationManager: NotificationManagerCompat
-    private var isServiceStopped = false
 
     private var lapTime = 0L
+    private var isServiceStopped = false
 
-    private var upTimerNotificationBuilder :NotificationCompat.Builder =
+    private lateinit var notificationManager: NotificationManagerCompat
+
+    private var cctTimerNotificationBuilder : NotificationCompat.Builder =
         NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setAutoCancel(false)
             .setOngoing(true)
             .setOnlyAlertOnce(true)
             .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle("스톱워치")
-            .setContentText("00:00:00")
+            .setContentTitle("누적 시간")
 
     override fun onCreate() {
         super.onCreate()
@@ -45,53 +44,48 @@ class UpTimerService: LifecycleService() {
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        super.onStartCommand(intent, flags, startId)
         intent?.let {
             when (it.action) {
-                ACTION_UP_TIMER_START -> {
+                ACTION_CUMULATIVE_TIMER_START ->{
                     startForegroundService(it.action!!,it.getLongExtra("data",-1))
                 }
-                ACTION_UP_TIMER_STOP -> {
-                    stopService(false)
+                ACTION_CUMULATIVE_TIMER_STOP ->{
+                    stopService()
                 }
-                ACTION_UP_TIMER_PAUSE ->{
-                   stopService(true)
-                }
-                else -> {}
             }
         }
         return super.onStartCommand(intent, flags, startId)
     }
-    private fun stopService(pause: Boolean){
+        private fun stopService(){
         isServiceStopped = true
-        timerEvent.postValue(TimerEvent.UpTimerStop)
-        if(!pause) {
-           upTimer.postValue(0L)
-        }
-        notificationManager.cancel(UP_TIMER_NOTIFICATION_ID)
+        timerEvent.postValue(TimerEvent.CumulativeTimerStop)
+        notificationManager.cancel(CCT_TIMER_NOTIFICATION_ID)
         stopForeground(true)
         stopSelf()
     }
-    private fun startForegroundService(action: String, data: Long) {
-        timerEvent.postValue(TimerEvent.UpTimerStart)
-        if(action == ACTION_UP_TIMER_START){
-            startUpTimer(data)
+    private fun startForegroundService(action: String,data: Long) {
+        timerEvent.postValue(TimerEvent.CumulativeTimerStart)
+        if (action == ACTION_CUMULATIVE_TIMER_START) {
+            startCumulativeTimer(data)
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        startForeground(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
+        startForeground(CCT_TIMER_NOTIFICATION_ID, cctTimerNotificationBuilder.build())
 
-        upTimer.observe(this) {
+        cumulativeTimer.observe(this) {
             if (!isServiceStopped) {
-                upTimerNotificationBuilder
+                cctTimerNotificationBuilder
                     .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentTitle("누적시간")
                     .setContentText(TimerUtil.getFormattedSecondTime(it, false)
-                )
-                notificationManager.notify(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
+                    )
+                notificationManager.notify(CCT_TIMER_NOTIFICATION_ID,
+                    cctTimerNotificationBuilder.build())
             }
         }
     }
-
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val channel =
@@ -106,18 +100,18 @@ class UpTimerService: LifecycleService() {
     private fun getTimerActivityPendingIntent() =
         PendingIntent.getActivity(
             this,
-            420,
+            419,
             Intent(this, TimerActivity::class.java).apply{
                 this.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
             },
             PendingIntent.FLAG_UPDATE_CURRENT
         )
-    private fun startUpTimer(data: Long){
+    private fun startCumulativeTimer(data: Long){
         val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
         CoroutineScope(Dispatchers.Main).launch{
-            while(!isServiceStopped && timerEvent.value!! == TimerEvent.UpTimerStart){
+            while(!isServiceStopped && timerEvent.value!! == TimerEvent.CumulativeTimerStart){
                 lapTime = System.currentTimeMillis() - timeStarted
-                upTimer.postValue(lapTime)
+                cumulativeTimer.postValue(lapTime)
                 delay(1000L)
             }
         }
