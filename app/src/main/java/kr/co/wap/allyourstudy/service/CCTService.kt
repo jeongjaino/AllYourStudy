@@ -48,7 +48,9 @@ class CCTService: LifecycleService() {
         intent?.let {
             when (it.action) {
                 ACTION_CUMULATIVE_TIMER_START ->{
-                    startForegroundService(it.action!!,it.getLongExtra("data",-1))
+                    timerEvent.postValue(TimerEvent.CumulativeTimerStart)
+                    startCumulativeTimer(it.getLongExtra("data",-1))
+
                 }
                 ACTION_CUMULATIVE_TIMER_STOP ->{
                     stopService()
@@ -57,55 +59,11 @@ class CCTService: LifecycleService() {
         }
         return super.onStartCommand(intent, flags, startId)
     }
-        private fun stopService(){
+    private fun stopService(){
         isServiceStopped = true
         timerEvent.postValue(TimerEvent.CumulativeTimerStop)
-        notificationManager.cancel(CCT_TIMER_NOTIFICATION_ID)
-        stopForeground(true)
         stopSelf()
     }
-    private fun startForegroundService(action: String,data: Long) {
-        timerEvent.postValue(TimerEvent.CumulativeTimerStart)
-        if (action == ACTION_CUMULATIVE_TIMER_START) {
-            startCumulativeTimer(data)
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel()
-        }
-        startForeground(CCT_TIMER_NOTIFICATION_ID, cctTimerNotificationBuilder.build())
-
-        cumulativeTimer.observe(this) {
-            if (!isServiceStopped) {
-                cctTimerNotificationBuilder
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentTitle("누적시간")
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, false)
-                    )
-                notificationManager.notify(CCT_TIMER_NOTIFICATION_ID,
-                    cctTimerNotificationBuilder.build())
-            }
-        }
-    }
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel() {
-        val channel =
-            NotificationChannel(
-                NOTIFICATION_CHANNEL_ID,
-                NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
-            )
-
-        notificationManager.createNotificationChannel(channel)
-    }
-    private fun getTimerActivityPendingIntent() =
-        PendingIntent.getActivity(
-            this,
-            419,
-            Intent(this, TimerActivity::class.java).apply{
-                this.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
-            },
-            PendingIntent.FLAG_UPDATE_CURRENT
-        )
     private fun startCumulativeTimer(data: Long){
         val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
         CoroutineScope(Dispatchers.Main).launch{

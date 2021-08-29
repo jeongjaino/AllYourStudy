@@ -46,9 +46,9 @@ class PomodoroFragment : Fragment() {
         }
     }
     private fun toggleTimer(){
-        val time = binding.pomodoroTimer.text
+        val time = binding.pomodoroTimer.text.toString()
         if(!isTimerRunning){
-            sendCommandToService(ACTION_POMODORO_TIMER_START,TimerUtil.getLongTimer(time as String))
+            sendCommandToService(ACTION_POMODORO_TIMER_START,TimerUtil.getLongTimer(time))
         }
         else{
             sendCommandToService(ACTION_POMODORO_TIMER_PAUSE,0)
@@ -63,11 +63,15 @@ class PomodoroFragment : Fragment() {
             is TimerEvent.PomodoroTimerStop -> {
                 isTimerRunning = false
                 binding.pomodoroStartButton.text = "START"
-                initValues()
             }
             is TimerEvent.PomodoroRestTimerStart ->{
                 isTimerRunning = false
                 restTimerValues()
+            }
+            is TimerEvent.PomodoroRestTimerStop ->{
+                initValues()
+                val time = binding.pomodoroTimer.text.toString()
+                sendCommandToService(ACTION_POMODORO_TIMER_START, TimerUtil.getLongTimer(time))
             }
         }
     }
@@ -79,15 +83,12 @@ class PomodoroFragment : Fragment() {
     }
     private fun initValues(){
         binding.pomodoroStartButton.visibility = View.VISIBLE
-        binding.pomodoroStartButton.text = "START"
-        binding.pomodoroResetButton.text = "RESET"
         binding.pomodoroProgress.max = 25 * 60
         binding.pomodoroProgress.setProgressStartColor(Color.RED)
         binding.pomodoroProgress.setProgressEndColor(Color.RED)
     }
     private fun restTimerValues(){
         binding.pomodoroStartButton.visibility = View.GONE
-        binding.pomodoroResetButton.text = "SKIP"
         binding.pomodoroProgress.max = 5 * 60
         binding.pomodoroProgress.setProgressStartColor(Color.BLUE)
         binding.pomodoroProgress.setProgressEndColor(Color.BLUE)

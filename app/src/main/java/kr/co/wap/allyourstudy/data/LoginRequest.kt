@@ -1,7 +1,6 @@
 package kr.co.wap.allyourstudy.data
 
-data class RegisterRequest (
+data class LoginRequest (
     val email: String,
-    val username: String,
     val password: String
-        )
+)

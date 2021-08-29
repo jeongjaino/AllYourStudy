@@ -19,6 +19,6 @@
 
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
 
-        <item name="android:windowBackground">@drawable/anyconv_com__alexander_andrews__bq3tesbrde_unsplash__1_</item>
+        <item name="android:windowBackground">@drawable/ic_screen1</item>
     </style>
 </resources>

@@ -31,10 +31,6 @@ class TimerActivity : AppCompatActivity() {
     private val downTimerFragment = DownTimerFragment()
     private val pomodoroFragment = PomodoroFragment()
 
-    private var upTimerEvent: TimerEvent = TimerEvent.UpTimerStop
-    private var downTimerEvent: TimerEvent = TimerEvent.DownTimerStop
-    private var pomodoroTimerEvent: TimerEvent = TimerEvent.PomodoroTimerStop
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -89,8 +85,8 @@ class TimerActivity : AppCompatActivity() {
         }
     }
     private fun cumulativeCycleTimer() {
-        if (UpTimerService.timerEvent.value == TimerEvent.UpTimerStop &&
-            DownTimerService.timerEvent.value == TimerEvent.DownTimerStop &&
+        if (UpTimerService.timerEvent.value != TimerEvent.UpTimerStart &&
+            DownTimerService.timerEvent.value != TimerEvent.DownTimerStart &&
             PomodoroService.timerEvent.value != TimerEvent.PomodoroTimerStart
         ) {
             sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)

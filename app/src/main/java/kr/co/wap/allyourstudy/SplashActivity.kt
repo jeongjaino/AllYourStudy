@@ -13,9 +13,11 @@ class SplashActivity : AppCompatActivity() {
     }
     private fun loadSplashScreen(){
         Handler(Looper.getMainLooper()).postDelayed({
-            val intent = Intent(this,MainActivity::class.java)
+            val intent = Intent(this,LoginActivity::class.java).apply {
+                this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
             startActivity(intent)
             finish()
-        }, 3000)
+        }, 2000)
     }
 }

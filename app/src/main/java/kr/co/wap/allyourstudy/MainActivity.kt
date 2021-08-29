@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity(){
     var startX = 0f
     var startY = 0f
 
+    var xl = 0f
+    var yl = 0f
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -69,37 +72,32 @@ class MainActivity : AppCompatActivity(){
     @SuppressLint("ClickableViewAccessibility")
     private fun dragAndDrop(){
         binding.cardView.setOnTouchListener{v, event ->
-            val containerHeight = binding.fragmentContainer.height
-            val containerWidth = binding.fragmentContainer.width
-            val cardHeight = binding.cardView.height
-            val cardWidth = binding.cardView.width
 
+            val height = binding.fragmentContainer.height - binding.cardView.height
+            val width = binding.fragmentContainer.width - binding.cardView.width
             when(event.action){
                 MotionEvent.ACTION_DOWN ->{
                     startX = event.x
                     startY = event.y
                 }
                 MotionEvent.ACTION_MOVE ->{
-                    var movedX: Float = event.x - startX
-                    var movedY: Float = event.y - startY
+                    val movedX: Float = event.x - startX
+                    val movedY: Float = event.y - startY
 
                     v.x = v.x + movedX
                     v.y = v.y + movedY
 
-                    if(v.x < 0){
-                        v.x = 0f
+                    xl = if(v.x <= width/2){ 0f }
+                    else { width.toFloat() }
+
+                    yl = when {
+                        v.y < 0 -> { 0f }
+                        v.y > height -> { height.toFloat() }
+                        else -> { v.y }
                     }
-                    if(v.x > containerWidth-cardWidth){
-                        v.x = containerWidth-cardWidth.toFloat()
-                    }
-                    if(v.y < 0){
-                        v.y = 0f
-                    }
-                    if(v.y > containerHeight-cardHeight){
-                        v.y = containerHeight-cardHeight.toFloat()
-                    }
-                    binding.cardView.x = v.x
-                    binding.cardView.y = v.y
+                    v.animate()
+                        .x(xl)
+                        .y(yl)
                 }
             }
             true

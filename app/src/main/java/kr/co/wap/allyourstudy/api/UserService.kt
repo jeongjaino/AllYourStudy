@@ -1,5 +1,7 @@
 package kr.co.wap.allyourstudy.api
 
+import kr.co.wap.allyourstudy.data.LoginRequest
+import kr.co.wap.allyourstudy.data.LoginResponse
 import kr.co.wap.allyourstudy.data.RegisterRequest
 import kr.co.wap.allyourstudy.data.RegisterResponse
 import retrofit2.Call
@@ -13,6 +15,11 @@ interface UserService{
     fun register(
         @Body registerRequest: RegisterRequest
     ): Call<RegisterResponse>
+
+    @POST("/auth/login/")
+    fun login(
+        @Body loginRequest: LoginRequest
+    ): Call<LoginResponse>
 }
 
 object RetrofitBuilder{

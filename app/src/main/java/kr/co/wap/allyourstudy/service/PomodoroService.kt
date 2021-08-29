@@ -141,7 +141,8 @@ class PomodoroService : LifecycleService(){
                     }
                 }
                 override fun onFinish() {
-                    stopService(false)
+                    pomodoroTimer.postValue(25*1000*60L)
+                    timerEvent.postValue(TimerEvent.PomodoroRestTimerStop)
                 }
             }.start()
         }
