@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -25,22 +26,10 @@ class CCTService: LifecycleService() {
         val timerEvent = MutableLiveData<TimerEvent>()
     }
 
-    private var lapTime = 0L
     private var isServiceStopped = false
-
-    private lateinit var notificationManager: NotificationManagerCompat
-
-    private var cctTimerNotificationBuilder : NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle("누적 시간")
 
     override fun onCreate() {
         super.onCreate()
-        notificationManager = NotificationManagerCompat.from(this)
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -50,7 +39,6 @@ class CCTService: LifecycleService() {
                 ACTION_CUMULATIVE_TIMER_START ->{
                     timerEvent.postValue(TimerEvent.CumulativeTimerStart)
                     startCumulativeTimer(it.getLongExtra("data",-1))
-
                 }
                 ACTION_CUMULATIVE_TIMER_STOP ->{
                     stopService()
@@ -65,11 +53,12 @@ class CCTService: LifecycleService() {
         stopSelf()
     }
     private fun startCumulativeTimer(data: Long){
-        val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
+        var timeStarted = data * 1000
         CoroutineScope(Dispatchers.Main).launch{
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.CumulativeTimerStart){
-                lapTime = System.currentTimeMillis() - timeStarted
-                cumulativeTimer.postValue(lapTime)
+                cumulativeTimer.postValue(timeStarted)
+                Log.d("Tag",timeStarted.toString())
+                timeStarted += 1000
                 delay(1000L)
             }
         }

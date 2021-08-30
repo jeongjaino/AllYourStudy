@@ -1,9 +1,6 @@
 package kr.co.wap.allyourstudy.api
 
-import kr.co.wap.allyourstudy.data.LoginRequest
-import kr.co.wap.allyourstudy.data.LoginResponse
-import kr.co.wap.allyourstudy.data.RegisterRequest
-import kr.co.wap.allyourstudy.data.RegisterResponse
+import kr.co.wap.allyourstudy.data.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,6 +17,16 @@ interface UserService{
     fun login(
         @Body loginRequest: LoginRequest
     ): Call<LoginResponse>
+
+    @POST("/auth/token/verify/")
+    fun verify(
+        @Body tokenVerifyRequest: TokenVerifyRequest
+    ): Call<UnauthorizedResponse>
+
+    @POST("/auth/token/refresh/")
+    fun refresh(
+        @Body refreshVerifyRequest: RefreshVerifyRequest
+    ):Call<TokenVerifyResponse>
 }
 
 object RetrofitBuilder{

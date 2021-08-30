@@ -14,6 +14,7 @@ import kr.co.wap.allyourstudy.api.RetrofitBuilder
 import kr.co.wap.allyourstudy.data.LoginRequest
 import kr.co.wap.allyourstudy.data.LoginResponse
 import kr.co.wap.allyourstudy.databinding.FragmentLoginBinding
+import kr.co.wap.allyourstudy.utils.TokenManager
 import retrofit2.Call
 import retrofit2.Response
 
@@ -33,6 +34,7 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
         binding.goRegisterButton.setOnClickListener {
             loginActivity.goRegister()
         }
@@ -51,6 +53,8 @@ class LoginFragment : Fragment() {
                     val responseCode = response.code()
                     if(responseCode == 200){
                         Toast.makeText(loginActivity, responseBody!!.email+" 반갑습니다!", Toast.LENGTH_LONG).show()
+                        TokenManager.saveRefreshToken(responseBody.tokens.refresh,loginActivity)
+                        TokenManager.saveAccessToken(responseBody.tokens.access,loginActivity)
                         loginActivity.goMain()
                     }
                     else{

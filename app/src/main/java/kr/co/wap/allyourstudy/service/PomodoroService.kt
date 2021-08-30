@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
 import android.os.CountDownTimer
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -12,6 +13,7 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.wap.allyourstudy.R
 import kr.co.wap.allyourstudy.TimerActivity
@@ -114,37 +116,36 @@ class PomodoroService : LifecycleService(){
             PendingIntent.FLAG_UPDATE_CURRENT
         )
     private fun startPomodoroTimer(data: Long){
-        var starting: Long = data * 1000 + 50
+        var starting: Long = data * 1000
         CoroutineScope(Dispatchers.Main).launch {
-            object  : CountDownTimer(starting, 1000){
-                override fun onTick(millisUntilFinished: Long) {
-                    if(!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroTimerStart) {
-                        starting = millisUntilFinished
-                        pomodoroTimer.postValue(starting)
-                    }
-                }
-                override fun onFinish() {
+            while (!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroTimerStart) {
+                pomodoroTimer.postValue(starting)
+                Log.d("tag", starting.toString())
+                if (starting == 0L) {
+                    delay(100) //누적시간이 따라오는시간
                     timerEvent.postValue(TimerEvent.PomodoroRestTimerStart)
                     startRestTimer()
+                    break
                 }
-            }.start()
+                starting -= 1000
+                delay(1000L)
+            }
         }
     }
     private fun startRestTimer(){
         var starting: Long = 5 * 60 * 1000
         CoroutineScope(Dispatchers.Main).launch {
-            object: CountDownTimer(starting, 1000){
-                override fun onTick(millisUntilFinished: Long) {
-                    if(timerEvent.value == TimerEvent.PomodoroRestTimerStart){
-                        starting = millisUntilFinished
-                        pomodoroTimer.postValue(starting)
-                    }
-                }
-                override fun onFinish() {
+            while (!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroRestTimerStart) {
+                pomodoroTimer.postValue(starting)
+                Log.d("tag", starting.toString())
+                if (starting == 0L) {
                     pomodoroTimer.postValue(25*1000*60L)
                     timerEvent.postValue(TimerEvent.PomodoroRestTimerStop)
+                    break
                 }
-            }.start()
+                starting -= 1000
+                delay(1000L)
+            }
         }
     }
 }

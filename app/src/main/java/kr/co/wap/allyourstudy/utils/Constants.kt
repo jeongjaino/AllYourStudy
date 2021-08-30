@@ -23,3 +23,6 @@ const val NOTIFICATION_CHANNEL_NAME = "timer_channel"
 const val UP_TIMER_NOTIFICATION_ID = 143
 const val DOWN_TIMER_NOTIFICATION_ID = 144
 const val POMODORO_TIMER_NOTIFICATION_ID = 145
+
+const val ACCESS_TOKEN = "access_token"
+const val REFRESH_TOKEN = "refresh_token"

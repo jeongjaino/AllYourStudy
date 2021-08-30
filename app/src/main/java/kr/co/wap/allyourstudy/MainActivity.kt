@@ -2,6 +2,7 @@ package kr.co.wap.allyourstudy
 
 import android.annotation.SuppressLint
 import android.content.ClipDescription
+import android.content.Context
 import android.content.Intent
 import android.content.res.ColorStateList
 import android.graphics.Color
@@ -38,6 +39,8 @@ class MainActivity : AppCompatActivity(){
     private val red = ColorStateList.valueOf(Color.rgb(250,100,100))
     private val green = ColorStateList.valueOf(Color.rgb(100,250,100))
     private val blue = ColorStateList.valueOf(Color.rgb(100,100,250))
+
+    private val sharedPref by lazy { this.getPreferences(Context.MODE_PRIVATE) }
 
     var startX = 0f
     var startY = 0f

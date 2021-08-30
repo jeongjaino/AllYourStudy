@@ -7,8 +7,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/drawable/ic_screen1.xml" value="0.40260416666666665" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_main.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_splash.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_timer.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_login.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_register.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/menu/timer_menu_bottom.xml" value="0.23802083333333332" />
       </map>
     </option>
   </component>

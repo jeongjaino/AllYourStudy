@@ -14,11 +14,14 @@ import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kr.co.wap.allyourstudy.R
 import kr.co.wap.allyourstudy.TimerActivity
 import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.utils.*
+import kotlin.concurrent.thread
+import kotlin.concurrent.timer
 
 class DownTimerService: LifecycleService() {
 
@@ -63,10 +66,10 @@ class DownTimerService: LifecycleService() {
     }
     private fun stopService(pause: Boolean){
         isServiceStopped = true
-        timerEvent.postValue(TimerEvent.DownTimerStop)
         if(!pause) {
             downTimer.postValue(0L)
         }
+        timerEvent.postValue(TimerEvent.DownTimerStop)
         notificationManager.cancel(DOWN_TIMER_NOTIFICATION_ID)
         stopForeground(true)
         stopSelf()
@@ -111,19 +114,18 @@ class DownTimerService: LifecycleService() {
            PendingIntent.FLAG_UPDATE_CURRENT
         )
     private fun startDownTimer(data: Long){
-        var starting = data * 1000 + 50 // 50이 수가 전달되면서 소실되는 값
+        var starting = data * 1000
         CoroutineScope(Dispatchers.Main).launch {
-            object : CountDownTimer(starting, 1000) {
-                override fun onTick(millisUntilFinished: Long) {
-                    if(!isServiceStopped && timerEvent.value!! == TimerEvent.DownTimerStart) {
-                        starting = millisUntilFinished
-                        downTimer.postValue(starting)
-                    }
-                }
-                override fun onFinish() {
+            while(!isServiceStopped && timerEvent.value!! == TimerEvent.DownTimerStart){
+                downTimer.postValue(starting)
+                Log.d("tag", starting.toString())
+                if(starting == 0L){
+                    delay(100) // 누적시간이 따라오는 시간
                     stopService(false)
                 }
-            }.start()
+                starting -= 1000
+                delay(1000L)
+            }
         }
     }
 }

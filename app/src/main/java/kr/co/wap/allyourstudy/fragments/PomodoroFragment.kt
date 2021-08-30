@@ -84,6 +84,7 @@ class PomodoroFragment : Fragment() {
     private fun initValues(){
         binding.pomodoroStartButton.visibility = View.VISIBLE
         binding.pomodoroProgress.max = 25 * 60
+        binding.pomodoroProgress.progress = 0
         binding.pomodoroProgress.setProgressStartColor(Color.RED)
         binding.pomodoroProgress.setProgressEndColor(Color.RED)
     }
@@ -98,7 +99,7 @@ class PomodoroFragment : Fragment() {
         dialog.setButtonClickListener(object : ResetDialogFragment.OnButtonClickListener{
             override fun onButtonYesClicked() {
                 sendCommandToService(ACTION_POMODORO_TIMER_STOP,0)
-                binding.pomodoroProgress.progress = 0
+                initValues()
             }
         })
         dialog.show(activity?.supportFragmentManager!!, "resetDialog")

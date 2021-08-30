@@ -35,7 +35,7 @@ class TimerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        val fragmentList = listOf(timerFragment, downTimerFragment, pomodoroFragment)
+        val fragmentList = listOf(pomodoroFragment, timerFragment, downTimerFragment)
         val adapter = FragmentAdapter(this)
         adapter.fragmentList = fragmentList
         binding.viewPager.adapter = adapter
@@ -50,9 +50,9 @@ class TimerActivity : AppCompatActivity() {
         navbar.run{
             setOnItemSelectedListener {
                 when(it.itemId){
-                    R.id.UpTimer -> { binding.viewPager.currentItem = 0 }
-                    R.id.DownTimer -> { binding.viewPager.currentItem = 1  }
-                    R.id.PomodoroTimer -> { binding.viewPager.currentItem = 2  }
+                    R.id.PomodoroTimer -> { binding.viewPager.currentItem = 0  }
+                    R.id.UpTimer -> { binding.viewPager.currentItem = 1 }
+                    R.id.DownTimer -> { binding.viewPager.currentItem = 2  }
                 }
                 true
             }

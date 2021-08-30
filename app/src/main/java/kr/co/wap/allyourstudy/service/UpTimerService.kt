@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -27,8 +28,6 @@ class UpTimerService: LifecycleService() {
     }
     private lateinit var notificationManager: NotificationManagerCompat
     private var isServiceStopped = false
-
-    private var lapTime = 0L
 
     private var upTimerNotificationBuilder :NotificationCompat.Builder =
         NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
@@ -113,11 +112,12 @@ class UpTimerService: LifecycleService() {
             PendingIntent.FLAG_UPDATE_CURRENT
         )
     private fun startUpTimer(data: Long){
-        val timeStarted = System.currentTimeMillis() - data * 1000  //(data,second) (millis = second *1000)
+        var timeStarted = data * 1000
         CoroutineScope(Dispatchers.Main).launch{
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.UpTimerStart){
-                lapTime = System.currentTimeMillis() - timeStarted
-                upTimer.postValue(lapTime)
+                upTimer.postValue(timeStarted)
+                Log.d(  "Tag",timeStarted.toString())
+                timeStarted += 1000
                 delay(1000L)
             }
         }
