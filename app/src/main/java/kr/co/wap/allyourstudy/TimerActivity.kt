@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kotlinx.coroutines.flow.SharingCommand
@@ -34,6 +35,9 @@ class TimerActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        binding.homeButton.setOnClickListener{
+            goHome()
+        }
 
         val fragmentList = listOf(pomodoroFragment, timerFragment, downTimerFragment)
         val adapter = FragmentAdapter(this)
@@ -67,6 +71,12 @@ class TimerActivity : AppCompatActivity() {
             }
         )
     }
+    private fun setObservers(){
+        CCTService.cumulativeTimer.observe(this){
+            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
+            weekResetTime()
+        }
+    }
     private fun setEventObservers() {
         DownTimerService.timerEvent.observe(this){
             cumulativeCycleTimer()
@@ -78,18 +88,13 @@ class TimerActivity : AppCompatActivity() {
             cumulativeCycleTimer()
         }
     }
-    private fun setObservers(){
-        CCTService.cumulativeTimer.observe(this){
-            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
-            weekResetTime()
-        }
-    }
     private fun cumulativeCycleTimer() {
         if (UpTimerService.timerEvent.value != TimerEvent.UpTimerStart &&
             DownTimerService.timerEvent.value != TimerEvent.DownTimerStart &&
-            PomodoroService.timerEvent.value != TimerEvent.PomodoroTimerStart
-        ) {
-            sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)
+            PomodoroService.timerEvent.value != TimerEvent.PomodoroTimerStart) {
+                if(PomodoroService.timerEvent.value != TimerEvent.PomodoroRestTimerStart) {
+                    sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)
+                }
         } else {
             if(CCTService.timerEvent.value != TimerEvent.CumulativeTimerStart) {
                 Log.d("Tag","start")
@@ -115,5 +120,9 @@ class TimerActivity : AppCompatActivity() {
         if(weekday == "월" && time == "07:00:00"){
             binding.cumulativeCycleTimer.text = "00:00:00"
         }
+    }
+    private fun goHome(){
+        val intent = Intent(this,MainActivity::class.java)
+        startActivity(intent)
     }
 }

@@ -33,12 +33,11 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:progress_background_color="@color/white"
-                app:progress_end_color="#FA0000"
-                app:progress_start_color="#FA0000"
+                app:progress_background_color="#FCB5B5B5"
+                app:progress_end_color="#FA6464"
+                app:progress_start_color="#FA6464"
                 app:progress_stroke_cap="round"
-                app:progress_style="solid"
-                app:srcCompat="@drawable/ic_launcher_background" />
+                app:progress_style="solid" />
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/innerCardView"

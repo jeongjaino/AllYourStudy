@@ -17,15 +17,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:progress_background_color="#FFFFFF"
-        app:progress_text_size="0dp"
-        app:progress_blur_radius="10dp"
-        app:progress_blur_style="solid"
-        app:progress_end_color="#03A9F4"
-        app:progress_start_color="#03A9F4"
+        app:progress_background_color="#FCB5B5B5"
+        app:progress_end_color="#FFDC5E"
+        app:progress_start_color="#FFDC5E"
         app:progress_stroke_cap="round"
+        app:progress_stroke_width="30dp"
         app:progress_style="solid_line"
-        app:progress_text_color="#03A9F4" />
+        app:progress_text_color="#03A9F4"
+        app:progress_text_size="0dp" />
 
     <Button
         android:id="@+id/downTimer_reset_button"

@@ -3,6 +3,7 @@ package kr.co.wap.allyourstudy.fragments
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,9 +25,6 @@ class PomodoroFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
-        initValues()
-
         binding.pomodoroStartButton.setOnClickListener{
             toggleTimer()
         }
@@ -57,6 +55,7 @@ class PomodoroFragment : Fragment() {
     private fun updateUi(event: TimerEvent) {
         when (event) {
             is TimerEvent.PomodoroTimerStart -> {
+                initValues()
                 isTimerRunning = true
                 binding.pomodoroStartButton.text = "PAUSE"
             }
@@ -67,11 +66,6 @@ class PomodoroFragment : Fragment() {
             is TimerEvent.PomodoroRestTimerStart ->{
                 isTimerRunning = false
                 restTimerValues()
-            }
-            is TimerEvent.PomodoroRestTimerStop ->{
-                initValues()
-                val time = binding.pomodoroTimer.text.toString()
-                sendCommandToService(ACTION_POMODORO_TIMER_START, TimerUtil.getLongTimer(time))
             }
         }
     }
@@ -84,15 +78,14 @@ class PomodoroFragment : Fragment() {
     private fun initValues(){
         binding.pomodoroStartButton.visibility = View.VISIBLE
         binding.pomodoroProgress.max = 25 * 60
-        binding.pomodoroProgress.progress = 0
-        binding.pomodoroProgress.setProgressStartColor(Color.RED)
-        binding.pomodoroProgress.setProgressEndColor(Color.RED)
+        binding.pomodoroProgress.setProgressStartColor(Color.rgb(250,100,100))
+        binding.pomodoroProgress.setProgressEndColor(Color.rgb(250,100,100))
     }
     private fun restTimerValues(){
         binding.pomodoroStartButton.visibility = View.GONE
         binding.pomodoroProgress.max = 5 * 60
-        binding.pomodoroProgress.setProgressStartColor(Color.BLUE)
-        binding.pomodoroProgress.setProgressEndColor(Color.BLUE)
+        binding.pomodoroProgress.setProgressStartColor(Color.rgb(100,100,250))
+        binding.pomodoroProgress.setProgressEndColor(Color.rgb(100,100,250))
     }
     private fun resetDialog(){
         val dialog = ResetDialogFragment()
@@ -100,6 +93,7 @@ class PomodoroFragment : Fragment() {
             override fun onButtonYesClicked() {
                 sendCommandToService(ACTION_POMODORO_TIMER_STOP,0)
                 initValues()
+                binding.pomodoroProgress.progress = 0
             }
         })
         dialog.show(activity?.supportFragmentManager!!, "resetDialog")

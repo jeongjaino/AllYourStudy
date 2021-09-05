@@ -25,8 +25,14 @@ interface UserService{
 
     @POST("/auth/token/refresh/")
     fun refresh(
-        @Body refreshVerifyRequest: RefreshVerifyRequest
+        @Body refreshToken: RefreshToken
     ):Call<TokenVerifyResponse>
+
+    @POST("/auth/logout/")
+    fun logout(
+        @Body refreshToken: RefreshToken
+    ):Call<UnauthorizedResponse>
+
 }
 
 object RetrofitBuilder{

@@ -27,4 +27,13 @@ object TokenManager {
         val prefs: SharedPreferences = context.getSharedPreferences(REFRESH_TOKEN,Context.MODE_PRIVATE)
         return prefs.getString(REFRESH_TOKEN, null)
     }
+    fun deleteTokens(context: Context){
+        val refreshPrefs: SharedPreferences = context.getSharedPreferences(REFRESH_TOKEN,Context.MODE_PRIVATE)
+        val accessPrefs: SharedPreferences = context.getSharedPreferences(ACCESS_TOKEN,Context.MODE_PRIVATE)
+        val refreshEditor = refreshPrefs.edit()
+        val accessEditor = accessPrefs.edit()
+        refreshEditor.clear()
+        accessEditor.clear()
+
+    }
 }

@@ -19,8 +19,8 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
+        android:layout_width="70dp"
+        android:layout_height="100dp"
         android:layout_marginTop="35dp"
         android:layout_marginRight="35dp"
         android:visibility="visible"
@@ -33,42 +33,48 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/pm_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:backgroundTint="#B6B5B5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/dt_fab"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/cloud" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/dt_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:backgroundTint="#B6B5B5"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <com.suke.widget.SwitchButton
+                android:id="@+id/pomodoroToggleButton"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="10dp"
+                android:minHeight="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_filter_drama_24" />
+                app:sb_background="#FCB5B5B5"
+                app:sb_checked_color="#FA6464"
+                app:sb_show_indicator="false"
+                app:sb_uncheck_color="#FCB5B5B5" />
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/stw_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                app:backgroundTint="#B6B5B5"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/dt_fab"
-                app:layout_constraintHorizontal_bias="0.5"
+            <com.suke.widget.SwitchButton
+                android:id="@+id/UpTimerToggleButton"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:minHeight="48dp"
+                app:layout_constraintBottom_toTopOf="@+id/DownTimerToggleButton"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/cloud" />
+                app:layout_constraintTop_toBottomOf="@+id/pomodoroToggleButton"
+                app:sb_background="#FCB5B5B5"
+                app:sb_checked_color="#749F74"
+                app:sb_show_indicator="false"
+                app:sb_uncheck_color="#FCB5B5B5" />
+
+            <com.suke.widget.SwitchButton
+                android:id="@+id/DownTimerToggleButton"
+                android:layout_width="50dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="10dp"
+                android:minHeight="48dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:sb_background="#FCB5B5B5"
+                app:sb_checked_color="#FFDC5E"
+                app:sb_show_indicator="false"
+                app:sb_uncheck_color="#FCB5B5B5" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.cardview.widget.CardView>
@@ -83,6 +89,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainer"
         app:menu="@menu/menu_bottom" />
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

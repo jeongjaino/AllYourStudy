@@ -7,11 +7,22 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/drawable/ic_screen1.xml" value="0.40260416666666665" />
-        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_main.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_login.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_main.xml" value="0.25" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_splash.xml" value="0.23802083333333332" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/activity_timer.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_down_timer.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_down_timer_dialog.xml" value="0.27291666666666664" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_login.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_logout_dialog.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_pomodoro.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_pomodoro_rest_dialog.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_register.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_timer.xml" value="0.25364583333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_youtube.xml" value="0.38645833333333335" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_youtube_play.xml" value="0.3109375" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/youtube_recycler_item.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/menu/timer_menu_bottom.xml" value="0.23802083333333332" />
       </map>
     </option>

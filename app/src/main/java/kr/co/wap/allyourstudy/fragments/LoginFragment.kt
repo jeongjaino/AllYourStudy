@@ -63,6 +63,7 @@ class LoginFragment : Fragment() {
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
                     Log.d("Tag",t.message.toString())
+                    Toast.makeText(loginActivity,"인터넷에 연결이 필요합니다.",Toast.LENGTH_SHORT).show()
                 }
             })
         }

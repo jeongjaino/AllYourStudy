@@ -57,9 +57,8 @@ class CCTService: LifecycleService() {
         CoroutineScope(Dispatchers.Main).launch{
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.CumulativeTimerStart){
                 cumulativeTimer.postValue(timeStarted)
-                Log.d("Tag",timeStarted.toString())
                 timeStarted += 1000
-                delay(1000L)
+                delay(993L)
             }
         }
     }

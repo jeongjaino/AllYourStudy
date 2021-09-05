@@ -85,6 +85,7 @@ class PomodoroService : LifecycleService(){
         pomodoroTimer.observe(this) {
             if (!isServiceStopped) {
                 pomodoroTimerNotificationBuilder
+                    .setContentTitle("뽀모도로 타이머")
                     .setContentIntent(getTimerActivityPendingIntent())
                     .setContentText(TimerUtil.getFormattedSecondTime(it, true))
                 if(timerEvent.value == TimerEvent.PomodoroRestTimerStart){
@@ -120,7 +121,6 @@ class PomodoroService : LifecycleService(){
         CoroutineScope(Dispatchers.Main).launch {
             while (!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroTimerStart) {
                 pomodoroTimer.postValue(starting)
-                Log.d("tag", starting.toString())
                 if (starting == 0L) {
                     delay(100) //누적시간이 따라오는시간
                     timerEvent.postValue(TimerEvent.PomodoroRestTimerStart)
@@ -128,23 +128,22 @@ class PomodoroService : LifecycleService(){
                     break
                 }
                 starting -= 1000
-                delay(1000L)
+                delay(993L)
             }
         }
     }
     private fun startRestTimer(){
-        var starting: Long = 5 * 60 * 1000
+        var starting: Long = 1 * 60 * 1000
         CoroutineScope(Dispatchers.Main).launch {
             while (!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroRestTimerStart) {
                 pomodoroTimer.postValue(starting)
-                Log.d("tag", starting.toString())
                 if (starting == 0L) {
-                    pomodoroTimer.postValue(25*1000*60L)
-                    timerEvent.postValue(TimerEvent.PomodoroRestTimerStop)
+                    timerEvent.postValue(TimerEvent.PomodoroTimerStart)
+                    startPomodoroTimer(25*60L)
                     break
                 }
                 starting -= 1000
-                delay(1000L)
+                delay(993L)
             }
         }
     }

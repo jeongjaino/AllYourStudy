@@ -39,6 +39,15 @@ class DownTimerFragment : Fragment() {
         setObservers()
         return binding.root
     }
+
+    override fun onStart() {
+        super.onStart()
+        if(DownTimerService.timerMax.value != null ) {
+            if(DownTimerService.timerMax.value!! > 0 ) {
+                binding.downTimerProgress.max = DownTimerService.timerMax.value!!
+            }
+        }
+    }
     private fun setObservers(){
         DownTimerService.timerEvent.observe(viewLifecycleOwner){
             updateUi(it)

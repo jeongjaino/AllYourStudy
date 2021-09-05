@@ -11,7 +11,6 @@ sealed class TimerEvent{
     object PomodoroTimerStop: TimerEvent()
 
     object PomodoroRestTimerStart: TimerEvent()
-    object PomodoroRestTimerStop: TimerEvent()
 
     object CumulativeTimerStart: TimerEvent()
     object CumulativeTimerStop: TimerEvent()

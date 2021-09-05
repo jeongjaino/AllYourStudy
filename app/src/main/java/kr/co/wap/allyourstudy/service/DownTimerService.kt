@@ -28,6 +28,7 @@ class DownTimerService: LifecycleService() {
     companion object{
         val timerEvent = MutableLiveData<TimerEvent>()
         val downTimer = MutableLiveData<Long>()
+        val timerMax = MutableLiveData<Int>() //progressbar max값
     }
 
     private lateinit var notificationManager: NotificationManagerCompat
@@ -50,6 +51,9 @@ class DownTimerService: LifecycleService() {
         intent.let{
             when(it?.action){
                 ACTION_DOWN_TIMER_START ->{
+                    if(timerMax.value == null || timerMax.value == 0){
+                        timerMax.postValue(it.getLongExtra("data",-1).toInt())
+                    }
                     startForegroundService(it.action!!,it.getLongExtra("data", -1))
                 }
                 ACTION_DOWN_TIMER_STOP ->{
@@ -68,6 +72,7 @@ class DownTimerService: LifecycleService() {
         isServiceStopped = true
         if(!pause) {
             downTimer.postValue(0L)
+            timerMax.postValue(0)
         }
         timerEvent.postValue(TimerEvent.DownTimerStop)
         notificationManager.cancel(DOWN_TIMER_NOTIFICATION_ID)
@@ -118,13 +123,12 @@ class DownTimerService: LifecycleService() {
         CoroutineScope(Dispatchers.Main).launch {
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.DownTimerStart){
                 downTimer.postValue(starting)
-                Log.d("tag", starting.toString())
                 if(starting == 0L){
                     delay(100) // 누적시간이 따라오는 시간
                     stopService(false)
                 }
                 starting -= 1000
-                delay(1000L)
+                delay(993L)
             }
         }
     }

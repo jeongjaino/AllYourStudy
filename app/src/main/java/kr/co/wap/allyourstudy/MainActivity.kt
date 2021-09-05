@@ -1,22 +1,10 @@
 package kr.co.wap.allyourstudy
 
 import android.annotation.SuppressLint
-import android.content.ClipDescription
-import android.content.Context
 import android.content.Intent
-import android.content.res.ColorStateList
-import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.DragEvent
 import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
@@ -26,6 +14,7 @@ import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.service.PomodoroService
 import kr.co.wap.allyourstudy.service.UpTimerService
+import kr.co.wap.allyourstudy.fragments.YoutubePlayerFragment
 
 
 class MainActivity : AppCompatActivity(){
@@ -34,13 +23,6 @@ class MainActivity : AppCompatActivity(){
 
     private val youtubeFragment = YoutubeFragment()
     private val homeFragment = HomeFragment()
-
-    private val gray = ColorStateList.valueOf(Color.rgb(181,181,181))
-    private val red = ColorStateList.valueOf(Color.rgb(250,100,100))
-    private val green = ColorStateList.valueOf(Color.rgb(100,250,100))
-    private val blue = ColorStateList.valueOf(Color.rgb(100,100,250))
-
-    private val sharedPref by lazy { this.getPreferences(Context.MODE_PRIVATE) }
 
     var startX = 0f
     var startY = 0f
@@ -53,6 +35,7 @@ class MainActivity : AppCompatActivity(){
         setContentView(binding.root)
         setObservers()
         dragAndDrop()
+        disabledButton()
     }
 
     override fun onStart(){
@@ -71,6 +54,11 @@ class MainActivity : AppCompatActivity(){
             }
             selectedItemId = R.id.Home //기본 홈 설정
         }
+    }
+    private fun disabledButton(){
+        binding.pomodoroToggleButton.isEnabled = false
+        binding.UpTimerToggleButton.isEnabled = false
+        binding.DownTimerToggleButton.isEnabled = false
     }
     @SuppressLint("ClickableViewAccessibility")
     private fun dragAndDrop(){
@@ -107,26 +95,20 @@ class MainActivity : AppCompatActivity(){
         }
     }
     private fun setObservers(){
+        PomodoroService.timerEvent.observe(this){
+            binding.pomodoroToggleButton.isEnabled = true
+            binding.pomodoroToggleButton.isChecked = it != TimerEvent.PomodoroTimerStop
+            disabledButton()
+        }
         UpTimerService.timerEvent.observe(this) {
-            if (it == TimerEvent.UpTimerStop) {
-                binding.stwFab.backgroundTintList = gray
-            } else {
-                binding.stwFab.backgroundTintList = green
-            }
+            binding.UpTimerToggleButton.isEnabled = true
+            binding.UpTimerToggleButton.isChecked = it != TimerEvent.UpTimerStop
+            disabledButton()
         }
         DownTimerService.timerEvent.observe(this){
-            if(it == TimerEvent.DownTimerStop){
-                binding.dtFab.backgroundTintList = gray
-            } else{
-                binding.dtFab.backgroundTintList = blue
-            }
-        }
-        PomodoroService.timerEvent.observe(this){
-            if(it == TimerEvent.PomodoroTimerStop){
-                binding.pmFab.backgroundTintList = gray
-            } else{
-                binding.pmFab.backgroundTintList = red
-            }
+            binding.DownTimerToggleButton.isEnabled = true
+            binding.DownTimerToggleButton.isChecked = it != TimerEvent.DownTimerStop
+            disabledButton()
         }
     }
     private fun replaceFragment(fragment: Fragment){
@@ -143,5 +125,15 @@ class MainActivity : AppCompatActivity(){
     }
     private fun goHome(){
         replaceFragment(homeFragment)
+    }
+    fun goLogin(){
+        val intent = Intent(this, LoginActivity::class.java).apply {
+            this.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
+        startActivity(intent)
+        finish()
+    }
+    fun goYoutubePlayer(){
+        replaceFragment(YoutubePlayerFragment())
     }
 }

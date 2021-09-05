@@ -9,10 +9,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
-import kr.co.wap.allyourstudy.data.RefreshVerifyRequest
-import kr.co.wap.allyourstudy.data.TokenVerifyRequest
-import kr.co.wap.allyourstudy.data.TokenVerifyResponse
-import kr.co.wap.allyourstudy.data.UnauthorizedResponse
+import kr.co.wap.allyourstudy.data.*
 import kr.co.wap.allyourstudy.utils.TokenManager
 import retrofit2.Call
 import retrofit2.Response
@@ -54,7 +51,7 @@ class SplashActivity : AppCompatActivity() {
     }
     private fun refreshTokenVerify(){
 
-        val token = RefreshVerifyRequest(TokenManager.getRefreshToken(this)!!)
+        val token = RefreshToken(TokenManager.getRefreshToken(this)!!)
         RetrofitBuilder.userService.refresh(token).enqueue(object: Callback<TokenVerifyResponse>{
             override fun onResponse(
                 call: Call<TokenVerifyResponse>,
