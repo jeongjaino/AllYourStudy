@@ -1,12 +1,14 @@
 package kr.co.wap.allyourstudy.fragments
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import kr.co.wap.allyourstudy.databinding.FragmentDownTimerBinding
 import kr.co.wap.allyourstudy.dialog.DownTimerDialogFragment
 import kr.co.wap.allyourstudy.dialog.ResetDialogFragment
@@ -99,10 +101,18 @@ class DownTimerFragment : Fragment() {
         dialog.show(activity?.supportFragmentManager!!, "InsertDialog")
     }
     private fun sendCommandToService(action: String, data: Long) {
-        activity?.startService(Intent(activity, DownTimerService::class.java).apply {
-            this.action = action
-            this.putExtra("data",data)
-        })
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            activity?.startForegroundService(Intent(activity, DownTimerService::class.java).apply {
+                this.action = action
+                this.putExtra("data", data)
+            })
+        }
+        else{
+            activity?.startService(Intent(activity, DownTimerService::class.java).apply {
+                this.action = action
+                this.putExtra("data", data)
+            })
+        }
     }
     private fun resetDialog(){
         val dialog = ResetDialogFragment()

@@ -1,11 +1,14 @@
 package kr.co.wap.allyourstudy
 
 import android.app.Activity
+import android.content.Context
+import android.content.Context.POWER_SERVICE
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.net.Uri
+import android.os.*
+import android.provider.Settings
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
@@ -16,6 +19,7 @@ import retrofit2.Response
 
 class SplashActivity : AppCompatActivity() {
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         accessTokenVerify()
@@ -82,6 +86,6 @@ class SplashActivity : AppCompatActivity() {
             }
             startActivity(intent)
             finish()
-        },2000)
+        },1000)
     }
 }

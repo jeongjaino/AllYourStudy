@@ -32,7 +32,10 @@ class RegisterFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
+        startRegister()
+        return binding.root
+    }
+    private fun startRegister(){
         binding.registerButton.setOnClickListener {
             val email = binding.registerEmailText.text.toString()
             val username = binding.registerNameText.text.toString()
@@ -48,7 +51,7 @@ class RegisterFragment : Fragment() {
                     val responseBody = response.body()
                     val responseCode = response.code()
                     if(responseCode == 201){
-                        Toast.makeText(loginActivity,"이메일을 보냈습니다. ", Toast.LENGTH_LONG).show()
+                        Toast.makeText(loginActivity,"입력한 메일로 이메일을 보냈습니다.", Toast.LENGTH_LONG).show()
                         loginActivity.goLogin()
                     }
                     else{
@@ -60,6 +63,5 @@ class RegisterFragment : Fragment() {
                 }
             })
         }
-        return binding.root
     }
 }

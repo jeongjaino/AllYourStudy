@@ -1,6 +1,7 @@
 package kr.co.wap.allyourstudy.fragments
 
 import android.content.Context
+import android.content.pm.ActivityInfo
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -34,7 +35,10 @@ class YoutubeFragment : Fragment(), YoutubePlayListAdapter.onItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View?{
-
+        loadPlayList()
+        return binding.root
+    }
+    private fun loadPlayList(){
         YoutubeRetrofit.youtubeService.getYouTubePlayList().enqueue(object: Callback<YouTubePlayListResponse>{
             override fun onResponse(
                 call: Call<YouTubePlayListResponse>,
@@ -58,9 +62,7 @@ class YoutubeFragment : Fragment(), YoutubePlayListAdapter.onItemClickListener {
                 Log.d("Tag",t.message.toString())
             }
         })
-        return binding.root
     }
-
     override fun onClick(position: Int, playInit: Item) {
         val videoId = playInit.id.videoId
         val bundle = bundleOf("videoId" to videoId)

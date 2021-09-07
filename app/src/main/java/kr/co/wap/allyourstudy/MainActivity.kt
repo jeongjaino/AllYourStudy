@@ -2,8 +2,10 @@ package kr.co.wap.allyourstudy
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.MotionEvent
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -20,8 +22,6 @@ import kr.co.wap.allyourstudy.fragments.YoutubePlayerFragment
 class MainActivity : AppCompatActivity(){
 
     val binding by lazy{ActivityMainBinding.inflate(layoutInflater)}
-
-    private val youtubeFragment = YoutubeFragment()
     private val homeFragment = HomeFragment()
 
     var startX = 0f
@@ -41,6 +41,20 @@ class MainActivity : AppCompatActivity(){
     override fun onStart(){
         super.onStart()
         initNavBar(binding.bottomBar)
+    }
+
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+
+        if(newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE){
+            //가로 방형
+            binding.bottomBar.visibility = View.GONE
+            binding.cardView.visibility = View.GONE
+        }else if(newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            // 세로 방향
+            binding.bottomBar.visibility = View.VISIBLE
+            binding.cardView.visibility = View.VISIBLE
+        }
     }
     private fun initNavBar(navbar: BottomNavigationView){
         navbar.run{
@@ -120,8 +134,8 @@ class MainActivity : AppCompatActivity(){
         val intent = Intent(this, TimerActivity::class.java)
         startActivity(intent)
     }
-    private fun goYouTube(){
-        replaceFragment(youtubeFragment)
+    fun goYouTube(){
+        replaceFragment(YoutubeFragment())
     }
     private fun goHome(){
         replaceFragment(homeFragment)

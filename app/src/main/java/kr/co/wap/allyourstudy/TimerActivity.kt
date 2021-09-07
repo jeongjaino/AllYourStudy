@@ -1,9 +1,11 @@
 package kr.co.wap.allyourstudy
 
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -24,6 +26,7 @@ import kr.co.wap.allyourstudy.utils.TimerUtil
 import java.text.SimpleDateFormat
 import java.util.*
 
+@RequiresApi(Build.VERSION_CODES.O)
 class TimerActivity : AppCompatActivity() {
 
     private val binding by lazy{ActivityTimerBinding.inflate(layoutInflater)}
@@ -77,6 +80,7 @@ class TimerActivity : AppCompatActivity() {
             weekResetTime()
         }
     }
+
     private fun setEventObservers() {
         DownTimerService.timerEvent.observe(this){
             cumulativeCycleTimer()
@@ -88,6 +92,7 @@ class TimerActivity : AppCompatActivity() {
             cumulativeCycleTimer()
         }
     }
+
     private fun cumulativeCycleTimer() {
         if (UpTimerService.timerEvent.value != TimerEvent.UpTimerStart &&
             DownTimerService.timerEvent.value != TimerEvent.DownTimerStart &&
@@ -95,7 +100,8 @@ class TimerActivity : AppCompatActivity() {
                 if(PomodoroService.timerEvent.value != TimerEvent.PomodoroRestTimerStart) {
                     sendCommandToService(ACTION_CUMULATIVE_TIMER_STOP, 0)
                 }
-        } else {
+        }
+        else {
             if(CCTService.timerEvent.value != TimerEvent.CumulativeTimerStart) {
                 Log.d("Tag","start")
                 val timer = binding.cumulativeCycleTimer.text.toString()
@@ -103,11 +109,20 @@ class TimerActivity : AppCompatActivity() {
             }
         }
     }
+
     private fun sendCommandToService(action: String, data: Long) {
-        this.startService(Intent(this, CCTService::class.java).apply {
-            this.action = action
-            this.putExtra("data",data)
-        })
+        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
+            this.startForegroundService(Intent(this, CCTService::class.java).apply {
+                this.action = action
+                this.putExtra("data", data)
+            })
+        }
+        else{
+            this.startService(Intent(this, CCTService::class.java).apply {
+                this.action = action
+                this.putExtra("data", data)
+            })
+        }
     }
     private fun weekResetTime(){
         val currentTime = Calendar.getInstance().time

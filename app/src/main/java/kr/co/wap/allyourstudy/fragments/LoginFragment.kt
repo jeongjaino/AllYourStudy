@@ -38,6 +38,10 @@ class LoginFragment : Fragment() {
         binding.goRegisterButton.setOnClickListener {
             loginActivity.goRegister()
         }
+        startLogin()
+        return binding.root
+    }
+    private fun startLogin(){
         binding.loginButton.setOnClickListener {
             val email = binding.emailText.text.toString()
             val password = binding.passwordText.text.toString()
@@ -58,15 +62,13 @@ class LoginFragment : Fragment() {
                         loginActivity.goMain()
                     }
                     else{
-                        Log.d("tag",responseCode.toString())
+                        Toast.makeText(loginActivity, "이메일이나 비밀번호가 올바르지 않습니다.",Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
-                    Log.d("Tag",t.message.toString())
                     Toast.makeText(loginActivity,"인터넷에 연결이 필요합니다.",Toast.LENGTH_SHORT).show()
                 }
             })
         }
-        return binding.root
     }
 }

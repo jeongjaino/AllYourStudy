@@ -30,20 +30,36 @@ class PomodoroService : LifecycleService(){
     private lateinit var notificationManager: NotificationManagerCompat
     private var isServiceStopped = false
 
-    private var pomodoroTimerNotificationBuilder : NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle("뽀모도로 타이머")
-            .setContentText("00:00:00")
-
-
-
     override fun onCreate() {
         super.onCreate()
         notificationManager = NotificationManagerCompat.from(this)
+
+        val pomodoroTimerNotificationBuilder : NotificationCompat.Builder =
+            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setGroup(ALL_YOUR_STUDY)
+                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setContentTitle("뽀모도로 타이머")
+                .setContentText("00:00:00")
+
+        startForeground(POMODORO_TIMER_NOTIFICATION_ID, pomodoroTimerNotificationBuilder.build())
+
+        pomodoroTimer.observe(this) {
+            if (!isServiceStopped) {
+                pomodoroTimerNotificationBuilder
+                    .setContentTitle("뽀모도로 타이머")
+                    .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentText(TimerUtil.getFormattedSecondTime(it, true))
+                if(timerEvent.value == TimerEvent.PomodoroRestTimerStart){
+                    pomodoroTimerNotificationBuilder
+                        .setContentTitle("휴식시간")
+                }
+                notificationManager.notify(POMODORO_TIMER_NOTIFICATION_ID, pomodoroTimerNotificationBuilder.build())
+            }
+        }
+
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -53,11 +69,10 @@ class PomodoroService : LifecycleService(){
                     startForegroundService(it.action!!, it.getLongExtra("data",-1)  )}
 
                 ACTION_POMODORO_TIMER_STOP ->{
-                    stopService(false)}
+                    stopService(false) }
 
                 ACTION_POMODORO_TIMER_PAUSE ->{
                     stopService(true)}
-
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -80,21 +95,6 @@ class PomodoroService : LifecycleService(){
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        startForeground(POMODORO_TIMER_NOTIFICATION_ID, pomodoroTimerNotificationBuilder.build())
-
-        pomodoroTimer.observe(this) {
-            if (!isServiceStopped) {
-                pomodoroTimerNotificationBuilder
-                    .setContentTitle("뽀모도로 타이머")
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, true))
-                if(timerEvent.value == TimerEvent.PomodoroRestTimerStart){
-                    pomodoroTimerNotificationBuilder
-                        .setContentTitle("휴식시간")
-                }
-                notificationManager.notify(POMODORO_TIMER_NOTIFICATION_ID, pomodoroTimerNotificationBuilder.build())
-            }
-        }
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(){
@@ -102,7 +102,7 @@ class PomodoroService : LifecycleService(){
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             )
         notificationManager.createNotificationChannel(channel)
     }

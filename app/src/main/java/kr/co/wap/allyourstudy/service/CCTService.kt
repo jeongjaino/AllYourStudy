@@ -3,8 +3,10 @@ package kr.co.wap.allyourstudy.service
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -27,9 +29,43 @@ class CCTService: LifecycleService() {
     }
 
     private var isServiceStopped = false
+    private lateinit var notificationManager: NotificationManagerCompat
+
+    private val wakeLock: PowerManager.WakeLock by lazy {
+        (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
+            newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag")
+        }
+    }
 
     override fun onCreate() {
         super.onCreate()
+        notificationManager = NotificationManagerCompat.from(this)
+
+        wakeLock.acquire()
+
+        val ccTimerNotificationBuilder :NotificationCompat.Builder =
+            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setShowWhen(false)
+                .setContentIntent(getTimerActivityPendingIntent())
+                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setContentTitle("AllYourStudy")
+                .setGroup(ALL_YOUR_STUDY)
+                .setGroupSummary(true)
+
+        startForeground(CCTIMER_NOTIFICATION_ID, ccTimerNotificationBuilder.build())
+
+       /* cumulativeTimer.observe(this) {
+            if (!isServiceStopped) {
+                ccTimerNotificationBuilder
+                    .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentText(TimerUtil.getFormattedSecondTime(it, false)
+                    )
+                notificationManager.notify(CCTIMER_NOTIFICATION_ID, ccTimerNotificationBuilder.build())
+            }
+        }*/
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -37,8 +73,7 @@ class CCTService: LifecycleService() {
         intent?.let {
             when (it.action) {
                 ACTION_CUMULATIVE_TIMER_START ->{
-                    timerEvent.postValue(TimerEvent.CumulativeTimerStart)
-                    startCumulativeTimer(it.getLongExtra("data",-1))
+                   startService(it.getLongExtra("data",-1))
                 }
                 ACTION_CUMULATIVE_TIMER_STOP ->{
                     stopService()
@@ -47,11 +82,37 @@ class CCTService: LifecycleService() {
         }
         return super.onStartCommand(intent, flags, startId)
     }
+    private fun startService(data: Long){
+        timerEvent.postValue(TimerEvent.CumulativeTimerStart)
+        startCumulativeTimer(data)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            createNotificationChannel()
+        }
+    }
     private fun stopService(){
         isServiceStopped = true
         timerEvent.postValue(TimerEvent.CumulativeTimerStop)
         stopSelf()
     }
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel() {
+        val channel =
+            NotificationChannel(
+                NOTIFICATION_CHANNEL_ID,
+                NOTIFICATION_CHANNEL_NAME,
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
+        notificationManager.createNotificationChannel(channel)
+    }
+    private fun getTimerActivityPendingIntent() =
+        PendingIntent.getActivity(
+            this,
+            420,
+            Intent(this, TimerActivity::class.java).apply{
+                this.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+            },
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
     private fun startCumulativeTimer(data: Long){
         var timeStarted = data * 1000
         CoroutineScope(Dispatchers.Main).launch{
@@ -61,5 +122,10 @@ class CCTService: LifecycleService() {
                 delay(993L)
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        wakeLock.release()
     }
 }

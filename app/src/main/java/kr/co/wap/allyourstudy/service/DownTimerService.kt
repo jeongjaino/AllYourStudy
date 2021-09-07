@@ -34,17 +34,30 @@ class DownTimerService: LifecycleService() {
     private lateinit var notificationManager: NotificationManagerCompat
     private var isServiceStopped = false
 
-    private var downTimerNotificationBuilder : NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle("타이머")
-            .setContentText("00:00:00")
-
     override fun onCreate() {
         super.onCreate()
         notificationManager = NotificationManagerCompat.from(this)
+
+        val downTimerNotificationBuilder : NotificationCompat.Builder =
+            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setGroup(ALL_YOUR_STUDY)
+                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setContentTitle("타이머")
+                .setContentText("00:00:00")
+
+        startForeground(DOWN_TIMER_NOTIFICATION_ID, downTimerNotificationBuilder.build())
+
+        downTimer.observe(this) {
+            if (!isServiceStopped) {
+                downTimerNotificationBuilder
+                    .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentText(TimerUtil.getFormattedSecondTime(it, false))
+                notificationManager.notify(DOWN_TIMER_NOTIFICATION_ID, downTimerNotificationBuilder.build())
+            }
+        }
+
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -63,7 +76,6 @@ class DownTimerService: LifecycleService() {
                 ACTION_DOWN_TIMER_PAUSE ->{
                     stopService(true)
                 }
-                else ->{}
             }
         }
         return super.onStartCommand(intent, flags, startId)
@@ -87,16 +99,6 @@ class DownTimerService: LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        startForeground(DOWN_TIMER_NOTIFICATION_ID, downTimerNotificationBuilder.build())
-
-        downTimer.observe(this) {
-            if (!isServiceStopped) {
-                downTimerNotificationBuilder
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, false))
-                notificationManager.notify(DOWN_TIMER_NOTIFICATION_ID, downTimerNotificationBuilder.build())
-            }
-        }
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(){
@@ -104,7 +106,7 @@ class DownTimerService: LifecycleService() {
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             )
         notificationManager.createNotificationChannel(channel)
     }

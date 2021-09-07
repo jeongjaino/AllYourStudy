@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
 import android.os.Build
+import android.os.PowerManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -29,18 +30,33 @@ class UpTimerService: LifecycleService() {
     private lateinit var notificationManager: NotificationManagerCompat
     private var isServiceStopped = false
 
-    private var upTimerNotificationBuilder :NotificationCompat.Builder =
-        NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
-            .setAutoCancel(false)
-            .setOngoing(true)
-            .setOnlyAlertOnce(true)
-            .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
-            .setContentTitle("스톱워치")
-            .setContentText("00:00:00")
+    private val wakelock = PowerManager.ACQUIRE_CAUSES_WAKEUP
 
     override fun onCreate() {
         super.onCreate()
         notificationManager = NotificationManagerCompat.from(this)
+
+        val upTimerNotificationBuilder :NotificationCompat.Builder =
+            NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
+                .setAutoCancel(false)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setGroup(ALL_YOUR_STUDY)
+                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setContentTitle("스톱워치")
+                .setContentText("00:00:00")
+
+        startForeground(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
+
+        upTimer.observe(this) {
+            if (!isServiceStopped) {
+                upTimerNotificationBuilder
+                    .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentText(TimerUtil.getFormattedSecondTime(it, false)
+                    )
+                notificationManager.notify(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
+            }
+        }
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -78,17 +94,6 @@ class UpTimerService: LifecycleService() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             createNotificationChannel()
         }
-        startForeground(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
-
-        upTimer.observe(this) {
-            if (!isServiceStopped) {
-                upTimerNotificationBuilder
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, false)
-                )
-                notificationManager.notify(UP_TIMER_NOTIFICATION_ID, upTimerNotificationBuilder.build())
-            }
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -97,7 +102,7 @@ class UpTimerService: LifecycleService() {
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_LOW
+                NotificationManager.IMPORTANCE_DEFAULT
             )
 
         notificationManager.createNotificationChannel(channel)
