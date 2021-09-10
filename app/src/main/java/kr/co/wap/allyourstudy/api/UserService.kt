@@ -1,6 +1,6 @@
 package kr.co.wap.allyourstudy.api
 
-import kr.co.wap.allyourstudy.data.*
+import kr.co.wap.allyourstudy.logindata.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

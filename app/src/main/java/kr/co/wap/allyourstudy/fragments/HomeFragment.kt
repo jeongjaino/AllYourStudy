@@ -11,8 +11,8 @@ import android.widget.Toast
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.MainActivity
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
-import kr.co.wap.allyourstudy.data.RefreshToken
-import kr.co.wap.allyourstudy.data.UnauthorizedResponse
+import kr.co.wap.allyourstudy.logindata.RefreshToken
+import kr.co.wap.allyourstudy.logindata.UnauthorizedResponse
 import kr.co.wap.allyourstudy.databinding.FragmentHomeBinding
 import kr.co.wap.allyourstudy.dialog.LogoutDialogFragment
 import kr.co.wap.allyourstudy.utils.TokenManager

@@ -102,7 +102,7 @@ class PomodoroService : LifecycleService(){
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
         notificationManager.createNotificationChannel(channel)
     }
@@ -128,7 +128,7 @@ class PomodoroService : LifecycleService(){
                     break
                 }
                 starting -= 1000
-                delay(993L)
+                delay(997L)
             }
         }
     }
@@ -143,7 +143,7 @@ class PomodoroService : LifecycleService(){
                     break
                 }
                 starting -= 1000
-                delay(993L)
+                delay(997L)
             }
         }
     }

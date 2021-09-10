@@ -11,8 +11,8 @@ import android.widget.Toast
 import kr.co.wap.allyourstudy.LoginActivity
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
-import kr.co.wap.allyourstudy.data.RegisterRequest
-import kr.co.wap.allyourstudy.data.RegisterResponse
+import kr.co.wap.allyourstudy.logindata.RegisterRequest
+import kr.co.wap.allyourstudy.logindata.RegisterResponse
 import kr.co.wap.allyourstudy.databinding.FragmentRegisterBinding
 import retrofit2.Call
 import retrofit2.Response

@@ -1,4 +1,4 @@
-package kr.co.wap.allyourstudy.data
+package kr.co.wap.allyourstudy.logindata
 
 data class TokenVerifyRequest (
     val token: String

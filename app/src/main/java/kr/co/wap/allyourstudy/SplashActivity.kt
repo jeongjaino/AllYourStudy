@@ -2,7 +2,6 @@ package kr.co.wap.allyourstudy
 
 import android.app.Activity
 import android.content.Context
-import android.content.Context.POWER_SERVICE
 import android.content.Intent
 import android.net.Uri
 import android.os.*
@@ -12,7 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
-import kr.co.wap.allyourstudy.data.*
+import kr.co.wap.allyourstudy.logindata.*
 import kr.co.wap.allyourstudy.utils.TokenManager
 import retrofit2.Call
 import retrofit2.Response
@@ -22,7 +21,7 @@ class SplashActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        accessTokenVerify()
+        requestBatteryIgnore()
     }
     private fun accessTokenVerify(){
         if(TokenManager.getAccessToken(this) == null){
@@ -87,5 +86,18 @@ class SplashActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         },1000)
+    }
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun requestBatteryIgnore(){
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        if(powerManager.isIgnoringBatteryOptimizations(packageName)){
+            accessTokenVerify()
+        }
+        else{
+            val intent = Intent()
+            intent.action = Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS
+            intent.data = Uri.parse("package:$packageName")
+            startActivity(intent)
+        }
     }
 }

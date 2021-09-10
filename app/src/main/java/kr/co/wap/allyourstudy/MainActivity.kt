@@ -4,8 +4,11 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -108,6 +111,7 @@ class MainActivity : AppCompatActivity(){
             true
         }
     }
+
     private fun setObservers(){
         PomodoroService.timerEvent.observe(this){
             binding.pomodoroToggleButton.isEnabled = true

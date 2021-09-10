@@ -2,7 +2,6 @@ package kr.co.wap.allyourstudy.fragments
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -11,8 +10,8 @@ import android.widget.Toast
 import retrofit2.Callback
 import kr.co.wap.allyourstudy.LoginActivity
 import kr.co.wap.allyourstudy.api.RetrofitBuilder
-import kr.co.wap.allyourstudy.data.LoginRequest
-import kr.co.wap.allyourstudy.data.LoginResponse
+import kr.co.wap.allyourstudy.logindata.LoginRequest
+import kr.co.wap.allyourstudy.logindata.LoginResponse
 import kr.co.wap.allyourstudy.databinding.FragmentLoginBinding
 import kr.co.wap.allyourstudy.utils.TokenManager
 import retrofit2.Call

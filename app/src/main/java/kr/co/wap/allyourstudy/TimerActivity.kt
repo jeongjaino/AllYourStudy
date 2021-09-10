@@ -1,15 +1,18 @@
 package kr.co.wap.allyourstudy
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.flow.SharingCommand
 import kr.co.wap.allyourstudy.service.UpTimerService
 import kr.co.wap.allyourstudy.adapter.FragmentAdapter
 import kr.co.wap.allyourstudy.databinding.ActivityTimerBinding
@@ -20,6 +23,7 @@ import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.service.CCTService
 import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.service.PomodoroService
+import kr.co.wap.allyourstudy.utils.ACCESS_TOKEN
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_START
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_STOP
 import kr.co.wap.allyourstudy.utils.TimerUtil
@@ -27,7 +31,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 @RequiresApi(Build.VERSION_CODES.O)
-class TimerActivity : AppCompatActivity() {
+class TimerActivity : AppCompatActivity()/*, AdapterView.OnItemSelectedListener*/ {
 
     private val binding by lazy{ActivityTimerBinding.inflate(layoutInflater)}
 
@@ -35,13 +39,12 @@ class TimerActivity : AppCompatActivity() {
     private val downTimerFragment = DownTimerFragment()
     private val pomodoroFragment = PomodoroFragment()
 
+    private var UserInteraction = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTimerTheme()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        binding.homeButton.setOnClickListener{
-            goHome()
-        }
-
         val fragmentList = listOf(pomodoroFragment, timerFragment, downTimerFragment)
         val adapter = FragmentAdapter(this)
         adapter.fragmentList = fragmentList
@@ -49,9 +52,13 @@ class TimerActivity : AppCompatActivity() {
 
         initNavBar(binding.bottomNavigationView)
         viewPagerMenu()
+        setSpinner()
         setEventObservers()
         setObservers()
-        weekResetTime()
+        //weekResetTime()
+    }
+    private fun activityRestart() {
+        this.recreate()
     }
     private fun initNavBar(navbar: BottomNavigationView){
         navbar.run{
@@ -74,13 +81,53 @@ class TimerActivity : AppCompatActivity() {
             }
         )
     }
-    private fun setObservers(){
-        CCTService.cumulativeTimer.observe(this){
-            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
-            weekResetTime()
+    private fun setTimerTheme(){
+        //db에서 숫자 꺼내서 테마 설정
+        val prefs: SharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)
+        val position = prefs.getInt("theme",-1)
+        if(position == 2){
+            setTheme(R.style.SplashScreenTheme)
+        }
+        else if(position == 1){
+            setTheme(R.style.Theme_AllYourStudy)
+        }
+    }
+    private fun setSpinner(){
+        val spinner = binding.timerThemeSpinner
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.timer_theme_array,
+            android.R.layout.simple_spinner_item
+        ).also{
+                adapter -> adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
+            spinner.adapter = adapter
+        }
+        spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
+                val prefs: SharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)
+                if(UserInteraction && position != 0) {
+                    val editor = prefs.edit()
+                    editor.clear()
+                    editor.putInt("theme", position)
+                    editor.apply()
+                    activityRestart()
+                }
+            }
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+            }
         }
     }
 
+    override fun onUserInteraction() {
+        super.onUserInteraction()
+        UserInteraction = true
+    }
+    private fun setObservers(){
+        CCTService.cumulativeTimer.observe(this){
+            binding.cumulativeCycleTimer.text = TimerUtil.getFormattedSecondTime(it, false)
+            //weekResetTime()
+        }
+    }
     private fun setEventObservers() {
         DownTimerService.timerEvent.observe(this){
             cumulativeCycleTimer()
@@ -109,7 +156,6 @@ class TimerActivity : AppCompatActivity() {
             }
         }
     }
-
     private fun sendCommandToService(action: String, data: Long) {
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
             this.startForegroundService(Intent(this, CCTService::class.java).apply {

@@ -27,6 +27,7 @@ class PomodoroFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+
         binding.pomodoroStartButton.setOnClickListener{
             toggleTimer()
         }

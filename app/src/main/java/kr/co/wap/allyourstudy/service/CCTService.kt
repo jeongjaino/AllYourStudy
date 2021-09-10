@@ -100,7 +100,7 @@ class CCTService: LifecycleService() {
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
         notificationManager.createNotificationChannel(channel)
     }
@@ -119,11 +119,10 @@ class CCTService: LifecycleService() {
             while(!isServiceStopped && timerEvent.value!! == TimerEvent.CumulativeTimerStart){
                 cumulativeTimer.postValue(timeStarted)
                 timeStarted += 1000
-                delay(993L)
+                delay(997L)
             }
         }
     }
-
     override fun onDestroy() {
         super.onDestroy()
         wakeLock.release()

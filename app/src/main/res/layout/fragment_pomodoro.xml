@@ -4,89 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     tools:context=".fragments.PomodoroFragment">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/outCardView"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_marginBottom="100dp"
-        android:shape="ring"
-        app:cardCornerRadius="175dp"
-        app:cardElevation="10dp"
+    <com.dinuscxj.progressbar.CircleProgressBar
+        android:id="@+id/pomodoro_progress"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        app:drawBackgroundOutsideProgress="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:progress_background_color="#FCB5B5B5"
+        app:progress_end_color="#FA6464"
+        app:progress_start_color="#FA6464"
+        app:progress_stroke_cap="round"
+        app:progress_style="solid" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <androidx.cardview.widget.CardView
+        android:id="@+id/innerCardView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="50dp"
+        app:cardElevation="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/pomodoro_progress"
+        app:layout_constraintEnd_toEndOf="@+id/pomodoro_progress"
+        app:layout_constraintStart_toStartOf="@+id/pomodoro_progress"
+        app:layout_constraintTop_toTopOf="@+id/pomodoro_progress">
 
-            <com.dinuscxj.progressbar.CircleProgressBar
-                android:id="@+id/pomodoro_progress"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
-                app:drawBackgroundOutsideProgress="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:progress_background_color="#FCB5B5B5"
-                app:progress_end_color="#FA6464"
-                app:progress_start_color="#FA6464"
-                app:progress_stroke_cap="round"
-                app:progress_style="solid" />
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/innerCardView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:cardCornerRadius="50dp"
-                app:cardElevation="10dp"
-                app:layout_constraintBottom_toBottomOf="@+id/pomodoro_progress"
-                app:layout_constraintEnd_toEndOf="@+id/pomodoro_progress"
-                app:layout_constraintStart_toStartOf="@+id/pomodoro_progress"
-                app:layout_constraintTop_toTopOf="@+id/pomodoro_progress">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:id="@+id/pomodoroTimer"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:padding="14sp"
-                    android:text="00:01:00"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-            </androidx.cardview.widget.CardView>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/pomodoroTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="14sp"
+            android:text="00:01:00"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.cardview.widget.CardView>
 
     <Button
         android:id="@+id/pomodoro_start_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="30dp"
-        android:layout_marginRight="30dp"
         android:text="Start"
         app:layout_constraintEnd_toStartOf="@+id/pomodoro_reset_button"
-        app:layout_constraintTop_toBottomOf="@+id/outCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/pomodoro_progress" />
 
     <Button
         android:id="@+id/pomodoro_reset_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:text="Reset"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/outCardView" />
+        app:layout_constraintTop_toBottomOf="@+id/pomodoro_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

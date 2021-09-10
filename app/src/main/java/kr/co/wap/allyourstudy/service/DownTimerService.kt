@@ -106,7 +106,7 @@ class DownTimerService: LifecycleService() {
             NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_DEFAULT
+                NotificationManager.IMPORTANCE_LOW
             )
         notificationManager.createNotificationChannel(channel)
     }
@@ -130,7 +130,7 @@ class DownTimerService: LifecycleService() {
                     stopService(false)
                 }
                 starting -= 1000
-                delay(993L)
+                delay(997L)
             }
         }
     }
