@@ -4,13 +4,13 @@
         <layer-list>
             <item>
                 <shape android:shape="rectangle">
-                    <solid android:color="?attr/colorAccent" />
+                    <solid android:color="@color/white" />
                     <corners android:radius="12dp" />
                     <padding android:right="12dp" />
                 </shape>
             </item>
             <item
-                android:drawable="@drawable/cloud"
+                android:drawable="@drawable/main_cloud"
                 android:gravity="center|end"
                 android:width="25dp"
                 android:height="25dp" />

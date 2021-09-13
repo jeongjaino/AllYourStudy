@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kr.co.wap.allyourstudy.MainActivity
 import kr.co.wap.allyourstudy.adapter.YoutubePlayListAdapter
 import kr.co.wap.allyourstudy.api.YoutubeRetrofit
@@ -38,30 +41,35 @@ class YoutubeFragment : Fragment(), YoutubePlayListAdapter.onItemClickListener {
         loadPlayList()
         return binding.root
     }
-    private fun loadPlayList(){
-        YoutubeRetrofit.youtubeService.getYouTubePlayList().enqueue(object: Callback<YouTubePlayListResponse>{
-            override fun onResponse(
-                call: Call<YouTubePlayListResponse>,
-                response: Response<YouTubePlayListResponse>
-            ) {
-                val responseCode = response.code()
-                if(responseCode == 200) {
-                    Log.d("tag","success")
+    private fun loadPlayList() {
+        CoroutineScope(Dispatchers.IO).launch {
+            YoutubeRetrofit.youtubeService.getYouTubePlayList()
+                .enqueue(object : Callback<YouTubePlayListResponse> {
+                    override fun onResponse(
+                        call: Call<YouTubePlayListResponse>,
+                        response: Response<YouTubePlayListResponse>
+                    ) {
+                        val responseCode = response.code()
+                        if (responseCode == 200) {
+                            Log.d("tag", "success")
+                            CoroutineScope(Dispatchers.Main).launch {
+                                val adapter = YoutubePlayListAdapter(this@YoutubeFragment)
+                                binding.youtubePlayListRecyclerview.adapter = adapter
+                                binding.youtubePlayListRecyclerview.layoutManager =
+                                    LinearLayoutManager(context)
+                                adapter.playList = response.body() as YouTubePlayListResponse
+                                adapter.notifyDataSetChanged()
+                            }
+                        } else {
+                            Log.d("tag", responseCode.toString())
+                        }
+                    }
 
-                    val adapter = YoutubePlayListAdapter(this@YoutubeFragment)
-                    binding.youtubePlayListRecyclerview.adapter = adapter
-                    binding.youtubePlayListRecyclerview.layoutManager = LinearLayoutManager(context)
-                    adapter.playList = response.body() as YouTubePlayListResponse
-                    adapter.notifyDataSetChanged()
-                }
-                else{
-                    Log.d("tag",responseCode.toString())
-                }
-            }
-            override fun onFailure(call: Call<YouTubePlayListResponse>, t: Throwable) {
-                Log.d("Tag",t.message.toString())
-            }
-        })
+                    override fun onFailure(call: Call<YouTubePlayListResponse>, t: Throwable) {
+                        Log.d("Tag", t.message.toString())
+                    }
+                })
+        }
     }
     override fun onClick(position: Int, playInit: Item) {
         val videoId = playInit.id.videoId

@@ -1,16 +1,19 @@
 package kr.co.wap.allyourstudy.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.PowerManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -50,22 +53,13 @@ class CCTService: LifecycleService() {
                 .setOnlyAlertOnce(true)
                 .setShowWhen(false)
                 .setContentIntent(getTimerActivityPendingIntent())
-                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setSmallIcon(R.drawable.main_cloud)
+                .setColor(ContextCompat.getColor(baseContext, R.color.up_timer_green))
                 .setContentTitle("AllYourStudy")
                 .setGroup(ALL_YOUR_STUDY)
                 .setGroupSummary(true)
 
         startForeground(CCTIMER_NOTIFICATION_ID, ccTimerNotificationBuilder.build())
-
-       /* cumulativeTimer.observe(this) {
-            if (!isServiceStopped) {
-                ccTimerNotificationBuilder
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, false)
-                    )
-                notificationManager.notify(CCTIMER_NOTIFICATION_ID, ccTimerNotificationBuilder.build())
-            }
-        }*/
     }
     @RequiresApi(Build.VERSION_CODES.N)
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {

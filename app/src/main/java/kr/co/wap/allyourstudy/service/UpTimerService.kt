@@ -1,15 +1,18 @@
 package kr.co.wap.allyourstudy.service
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.PowerManager
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -41,8 +44,9 @@ class UpTimerService: LifecycleService() {
                 .setAutoCancel(false)
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
+                .setColor(ContextCompat.getColor(baseContext, R.color.up_timer_green))
                 .setGroup(ALL_YOUR_STUDY)
-                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setSmallIcon(R.drawable.up_timer)
                 .setContentTitle("스톱워치")
                 .setContentText("00:00:00")
 

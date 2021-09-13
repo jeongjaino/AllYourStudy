@@ -8,7 +8,11 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="windowBackground">#FFFFFFFF</color>
+    <color name="dark_gray">#A9A9A9 </color>
     <color name="gray">#B6B5B5</color>
     <color name="custom_red">#FA6464</color>
     <color name="custom_blue">#2196F3</color>
+    <color name="pomodoro_red">#ED6262</color>
+    <color name="up_timer_green">#95D1BC</color>
+    <color name="down_timer_yellow">#EDC26E</color>
 </resources>

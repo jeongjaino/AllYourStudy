@@ -1,14 +1,17 @@
 package kr.co.wap.allyourstudy.service
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Intent
+import android.graphics.Color
 import android.os.Build
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +43,8 @@ class PomodoroService : LifecycleService(){
                 .setOngoing(true)
                 .setOnlyAlertOnce(true)
                 .setGroup(ALL_YOUR_STUDY)
-                .setSmallIcon(R.drawable.ic_baseline_access_alarm_24)
+                .setColor(ContextCompat.getColor(baseContext, R.color.pomodoro_red))
+                .setSmallIcon(R.drawable.pomodoro_timer)
                 .setContentTitle("뽀모도로 타이머")
                 .setContentText("00:00:00")
 
@@ -133,7 +137,7 @@ class PomodoroService : LifecycleService(){
         }
     }
     private fun startRestTimer(){
-        var starting: Long = 1 * 60 * 1000
+        var starting: Long = 5 * 60 * 1000
         CoroutineScope(Dispatchers.Main).launch {
             while (!isServiceStopped && timerEvent.value!! == TimerEvent.PomodoroRestTimerStart) {
                 pomodoroTimer.postValue(starting)

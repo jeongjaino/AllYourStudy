@@ -2,14 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/PomodoroTimer"
-        android:icon="@drawable/ic_baseline_brightness_1_24"
-        android:title="뽀모도로 타이머" />
+        android:icon="@drawable/pomodoro_timer"
+        android:title="뽀모도로 타이머"/>
     <item
         android:id="@+id/UpTimer"
-        android:icon="@drawable/ic_baseline_brightness_1_24"
+        android:icon="@drawable/down_timer"
         android:title="스톱워치" />
     <item
         android:id="@+id/DownTimer"
-        android:icon="@drawable/ic_baseline_brightness_1_24"
+        android:icon="@drawable/up_timer"
         android:title="타이머" />
 </menu>
