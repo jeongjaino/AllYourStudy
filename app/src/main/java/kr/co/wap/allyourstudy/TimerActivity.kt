@@ -51,49 +51,36 @@ class TimerActivity : AppCompatActivity(){
     private val downTimerFragment = DownTimerFragment()
     private val pomodoroFragment = PomodoroFragment()
 
-    private var UserInteraction = false
+    private var userInteraction = false
 
-    var helper: RoomHelper? = null
+    //var helper: RoomHelper? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTimerTheme()
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        setViewPager()
+        initNavBar(binding.bottomNavigationView)
+        viewPagerMenu()
+        setSpinner()
+        //setAdapter()
+        setEventObservers()
+        setObservers()
+        //weekResetTime()?
+    }
+    private fun setViewPager(){
         val fragmentList = listOf(pomodoroFragment, timerFragment, downTimerFragment)
         val adapter = FragmentAdapter(this)
         adapter.fragmentList = fragmentList
         binding.viewPager.adapter = adapter
-
-        initNavBar(binding.bottomNavigationView)
-        viewPagerMenu()
-        setSpinner()
-        setAdapter()
-        setEventObservers()
-        setObservers()
-        //weekResetTime()
-    }
-    private fun activityRestart() {
-        this.recreate()
     }
     private fun initNavBar(navbar: BottomNavigationView){
         navbar.run{
             setOnItemSelectedListener {
                 when(it.itemId){
-                    R.id.PomodoroTimer -> {
-                        val multiColor = resources.getColorStateList(R.color.multi_pomodoro_color, null)
-                        binding.bottomNavigationView.itemIconTintList = multiColor
-                        binding.bottomNavigationView.itemTextColor = multiColor
-                        binding.viewPager.currentItem = 0  }
-                    R.id.UpTimer -> {
-                        val multiColor = resources.getColorStateList(R.color.multi_up_timer_color, null)
-                        binding.bottomNavigationView.itemTextColor = multiColor
-                        binding.bottomNavigationView.itemIconTintList = multiColor
-                        binding.viewPager.currentItem = 1 }
-                    R.id.DownTimer -> {
-                        val multiColor = resources.getColorStateList(R.color.multi_down_timer_color, null)
-                        binding.bottomNavigationView.itemTextColor = multiColor
-                        binding.bottomNavigationView.itemIconTintList = multiColor
-                        binding.viewPager.currentItem = 2  }
+                    R.id.PomodoroTimer -> { binding.viewPager.currentItem = 0  }
+                    R.id.UpTimer -> { binding.viewPager.currentItem = 1 }
+                    R.id.DownTimer -> { binding.viewPager.currentItem = 2  }
                 }
                 true
             }
@@ -103,7 +90,15 @@ class TimerActivity : AppCompatActivity(){
         binding.viewPager.registerOnPageChangeCallback(
             object: ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
-                   binding.bottomNavigationView.menu.getItem(position).isChecked = true
+                    var multiColor = resources.getColorStateList(R.color.multi_pomodoro_color, null)
+                    when(position){
+                        0 -> {multiColor = resources.getColorStateList(R.color.multi_pomodoro_color, null)}
+                        1 -> {multiColor = resources.getColorStateList(R.color.multi_up_timer_color, null)}
+                        2 -> {multiColor = resources.getColorStateList(R.color.multi_down_timer_color, null)}
+                    }
+                    binding.bottomNavigationView.itemTextColor = multiColor
+                    binding.bottomNavigationView.itemIconTintList = multiColor
+                    binding.bottomNavigationView.menu.getItem(position).isChecked = true
                 }
             }
         )
@@ -132,7 +127,7 @@ class TimerActivity : AppCompatActivity(){
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 val prefs: SharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)
-                if(UserInteraction && position != 0) {
+                if(userInteraction && position != 0) {
                     val editor = prefs.edit()
                     editor.clear()
                     editor.putInt("theme", position)
@@ -144,10 +139,12 @@ class TimerActivity : AppCompatActivity(){
             }
         }
     }
-
+    private fun activityRestart() {
+        this.recreate()
+    }
     override fun onUserInteraction() {
         super.onUserInteraction()
-        UserInteraction = true
+        userInteraction = true
     }
     private fun setObservers(){
         CCTService.cumulativeTimer.observe(this){
@@ -178,7 +175,7 @@ class TimerActivity : AppCompatActivity(){
         else {
             if(CCTService.timerEvent.value != TimerEvent.CumulativeTimerStart) {
                 Log.d("Tag","start")
-                insertCalendar() //캘린더 생성
+              //  insertCalendar() //캘린더 생성
                 val timer = binding.cumulativeCycleTimer.text.toString()
                 sendCommandToService(ACTION_CUMULATIVE_TIMER_START, TimerUtil.getLongTimer(timer))
             }
@@ -198,7 +195,7 @@ class TimerActivity : AppCompatActivity(){
             })
         }
     }
-    private fun setAdapter(){ //타이머 캘린더 어댑터
+    /*private fun setAdapter(){ //타이머 캘린더 어댑터
 
         val adapter = CalendarAdapter()
 
@@ -222,7 +219,7 @@ class TimerActivity : AppCompatActivity(){
         val dateFormat = SimpleDateFormat("MM월 dd일", Locale.KOREA)
         val date = dateFormat.format(currentTime)
         CoroutineScope(Dispatchers.IO).launch {
-        if(helper?.roomCalendarDao()?.loadByDate(date)?.date == null) {
+        if(helper?.roomCalendarDao()?.loadByDate(date)?.date != date) {
             val weekdayFormat = SimpleDateFormat("E요일", Locale.KOREA)
             val weekday = weekdayFormat.format(currentTime)
             val calendar = RoomCalendar(date, weekday, "check") //db에 저장
@@ -232,7 +229,7 @@ class TimerActivity : AppCompatActivity(){
                 setAdapter()
             }
         }
-    }
+    }*/
     private fun weekResetTime(){
         val currentTime = Calendar.getInstance().time
         val weekdayFormat = SimpleDateFormat("EE", Locale.KOREA)

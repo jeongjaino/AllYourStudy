@@ -86,6 +86,7 @@ class CCTService: LifecycleService() {
     private fun stopService(){
         isServiceStopped = true
         timerEvent.postValue(TimerEvent.CumulativeTimerStop)
+        stopForeground(true)
         stopSelf()
     }
     @RequiresApi(Build.VERSION_CODES.O)

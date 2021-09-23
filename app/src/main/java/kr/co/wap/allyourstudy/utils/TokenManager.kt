@@ -34,6 +34,5 @@ object TokenManager {
         val accessEditor = accessPrefs.edit()
         refreshEditor.clear()
         accessEditor.clear()
-
     }
 }

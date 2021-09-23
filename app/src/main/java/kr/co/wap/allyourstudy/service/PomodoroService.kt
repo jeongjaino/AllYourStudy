@@ -54,12 +54,13 @@ class PomodoroService : LifecycleService(){
             if (!isServiceStopped) {
                 pomodoroTimerNotificationBuilder
                     .setContentTitle("뽀모도로 타이머")
-                    .setContentIntent(getTimerActivityPendingIntent())
-                    .setContentText(TimerUtil.getFormattedSecondTime(it, true))
                 if(timerEvent.value == TimerEvent.PomodoroRestTimerStart){
                     pomodoroTimerNotificationBuilder
                         .setContentTitle("휴식시간")
                 }
+                pomodoroTimerNotificationBuilder
+                    .setContentIntent(getTimerActivityPendingIntent())
+                    .setContentText(TimerUtil.getFormattedSecondTime(it, true))
                 notificationManager.notify(POMODORO_TIMER_NOTIFICATION_ID, pomodoroTimerNotificationBuilder.build())
             }
         }
