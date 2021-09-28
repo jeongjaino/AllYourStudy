@@ -3,9 +3,8 @@ package kr.co.wap.allyourstudy.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kr.co.wap.allyourstudy.databinding.CalendarRecyclerItemBinding
 import kr.co.wap.allyourstudy.room.RoomCalendar
-
+/*
 class CalendarAdapter: RecyclerView.Adapter<Holder>() {
     var listData = mutableListOf<RoomCalendar>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
@@ -29,4 +28,4 @@ class Holder(val binding: CalendarRecyclerItemBinding): RecyclerView.ViewHolder(
         binding.itemTextWeekDay.text = calendar.weekday
         binding.itemTextCheck.text = calendar.check
     }
-}
+}*/
