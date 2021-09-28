@@ -3,5 +3,5 @@
     <font
         android:fontStyle = "normal"
         android:fontWeight = "400"
-        android:font = "@font/a시월구일굴림1"/>
+        android:font = "@font/agul2"/>
 </font-family>

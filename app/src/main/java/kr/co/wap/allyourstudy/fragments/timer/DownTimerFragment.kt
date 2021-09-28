@@ -1,4 +1,4 @@
-package kr.co.wap.allyourstudy.fragments
+package kr.co.wap.allyourstudy.fragments.timer
 
 import android.content.Intent
 import android.os.Build
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import kr.co.wap.allyourstudy.databinding.FragmentDownTimerBinding
 import kr.co.wap.allyourstudy.dialog.DownTimerDialogFragment
 import kr.co.wap.allyourstudy.dialog.ResetDialogFragment

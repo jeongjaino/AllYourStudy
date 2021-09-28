@@ -1,9 +1,7 @@
-package kr.co.wap.allyourstudy.fragments
+package kr.co.wap.allyourstudy.fragments.youtube
 
 import android.content.Context
-import android.content.Intent
 import android.content.pm.ActivityInfo
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater

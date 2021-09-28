@@ -1,4 +1,4 @@
-package kr.co.wap.allyourstudy.fragments
+package kr.co.wap.allyourstudy.fragments.login
 
 import android.content.Context
 import android.os.Bundle
@@ -34,7 +34,8 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View? {
 
-        binding.goRegisterButton.setOnClickListener {
+
+        binding.goRegisterText.setOnClickListener {
             loginActivity.goRegister()
         }
         startLogin()

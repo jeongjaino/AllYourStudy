@@ -3,39 +3,27 @@ package kr.co.wap.allyourstudy
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.ColorStateList
-import android.content.res.Resources
-import android.graphics.drawable.ColorStateListDrawable
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.room.Room
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kr.co.wap.allyourstudy.adapter.CalendarAdapter
 import kr.co.wap.allyourstudy.service.UpTimerService
 import kr.co.wap.allyourstudy.adapter.FragmentAdapter
 import kr.co.wap.allyourstudy.databinding.ActivityTimerBinding
-import kr.co.wap.allyourstudy.fragments.DownTimerFragment
-import kr.co.wap.allyourstudy.fragments.PomodoroFragment
-import kr.co.wap.allyourstudy.fragments.TimerFragment
+import kr.co.wap.allyourstudy.fragments.timer.DownTimerFragment
+import kr.co.wap.allyourstudy.fragments.timer.PomodoroFragment
+import kr.co.wap.allyourstudy.fragments.timer.TimerFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
-import kr.co.wap.allyourstudy.room.RoomCalendar
-import kr.co.wap.allyourstudy.room.RoomHelper
 import kr.co.wap.allyourstudy.service.CCTService
 import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.service.PomodoroService
+import kr.co.wap.allyourstudy.spinner.TimerSpinnerAdapter
+import kr.co.wap.allyourstudy.spinner.TimerSpinnerData
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_START
 import kr.co.wap.allyourstudy.utils.ACTION_CUMULATIVE_TIMER_STOP
 import kr.co.wap.allyourstudy.utils.TimerUtil
@@ -63,7 +51,6 @@ class TimerActivity : AppCompatActivity(){
         initNavBar(binding.bottomNavigationView)
         viewPagerMenu()
         setSpinner()
-        //setAdapter()
         setEventObservers()
         setObservers()
         //weekResetTime()?
@@ -115,15 +102,23 @@ class TimerActivity : AppCompatActivity(){
         }
     }
     private fun setSpinner(){
+        val themes = resources.getStringArray(R.array.timer_theme_array)
+        val themeList = ArrayList<TimerSpinnerData>()
+        for(i in themes.indices){
+            val theme = TimerSpinnerData(themes[i], R.drawable.main_cloud)
+            themeList.add(theme)
+        }
+        val spinnerTimerAdapter = TimerSpinnerAdapter(this, R.layout.spinner_timer_item, themeList)
         val spinner = binding.timerThemeSpinner
-        ArrayAdapter.createFromResource(
+        spinner.adapter = spinnerTimerAdapter
+       /* ArrayAdapter.createFromResource(
             this,
             R.array.timer_theme_array,
             android.R.layout.simple_spinner_item
         ).also{
                 adapter -> adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
             spinner.adapter = adapter
-        }
+        }*/
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 val prefs: SharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)
@@ -175,7 +170,6 @@ class TimerActivity : AppCompatActivity(){
         else {
             if(CCTService.timerEvent.value != TimerEvent.CumulativeTimerStart) {
                 Log.d("Tag","start")
-              //  insertCalendar() //캘린더 생성
                 val timer = binding.cumulativeCycleTimer.text.toString()
                 sendCommandToService(ACTION_CUMULATIVE_TIMER_START, TimerUtil.getLongTimer(timer))
             }
@@ -195,41 +189,6 @@ class TimerActivity : AppCompatActivity(){
             })
         }
     }
-    /*private fun setAdapter(){ //타이머 캘린더 어댑터
-
-        val adapter = CalendarAdapter()
-
-        helper = RoomHelper.getInstance(applicationContext)
-        CoroutineScope(Dispatchers.Main).launch {
-            CoroutineScope(Dispatchers.IO).async {
-                adapter.listData.addAll((helper?.roomCalendarDao()?.getAll() ?: listOf()))
-            }.await()
-            binding.recyclerView.adapter = adapter
-            binding.recyclerView.layoutManager =
-                LinearLayoutManager(baseContext, LinearLayoutManager.HORIZONTAL, false)
-        }
-
-    }
-    private fun insertCalendar(){
-
-        helper = RoomHelper.getInstance(applicationContext)
-
-        val adapter = CalendarAdapter()
-        val currentTime = Calendar.getInstance().time
-        val dateFormat = SimpleDateFormat("MM월 dd일", Locale.KOREA)
-        val date = dateFormat.format(currentTime)
-        CoroutineScope(Dispatchers.IO).launch {
-        if(helper?.roomCalendarDao()?.loadByDate(date)?.date != date) {
-            val weekdayFormat = SimpleDateFormat("E요일", Locale.KOREA)
-            val weekday = weekdayFormat.format(currentTime)
-            val calendar = RoomCalendar(date, weekday, "check") //db에 저장
-                helper?.roomCalendarDao()?.insert(calendar)
-                adapter.listData.clear()
-                adapter.listData.addAll((helper?.roomCalendarDao()?.getAll() ?: listOf()))
-                setAdapter()
-            }
-        }
-    }*/
     private fun weekResetTime(){
         val currentTime = Calendar.getInstance().time
         val weekdayFormat = SimpleDateFormat("EE", Locale.KOREA)

@@ -1,4 +1,6 @@
 package kr.co.wap.allyourstudy.spinner
 
-class timerSpinnerData {
-}
+data class TimerSpinnerData (
+    val theme: String,
+    val themeImage: Int
+    )

@@ -4,22 +4,20 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.res.Configuration
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
 import kr.co.wap.allyourstudy.fragments.HomeFragment
-import kr.co.wap.allyourstudy.fragments.YoutubeFragment
+import kr.co.wap.allyourstudy.fragments.todo.TodoWriteFragment
+import kr.co.wap.allyourstudy.fragments.youtube.YoutubeFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
 import kr.co.wap.allyourstudy.service.DownTimerService
 import kr.co.wap.allyourstudy.service.PomodoroService
 import kr.co.wap.allyourstudy.service.UpTimerService
-import kr.co.wap.allyourstudy.fragments.YoutubePlayerFragment
+import kr.co.wap.allyourstudy.fragments.youtube.YoutubePlayerFragment
 
 
 class MainActivity : AppCompatActivity(){
@@ -153,5 +151,11 @@ class MainActivity : AppCompatActivity(){
     }
     fun goYoutubePlayer(){
         replaceFragment(YoutubePlayerFragment())
+    }
+    fun goTodoWrite(){
+        replaceFragment(TodoWriteFragment())
+    }
+    fun goTodoList(){
+        replaceFragment(TodoWriteFragment())
     }
 }

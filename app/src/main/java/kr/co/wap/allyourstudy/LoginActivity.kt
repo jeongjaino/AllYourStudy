@@ -5,8 +5,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import kr.co.wap.allyourstudy.databinding.ActivityLoginBinding
-import kr.co.wap.allyourstudy.fragments.LoginFragment
-import kr.co.wap.allyourstudy.fragments.RegisterFragment
+import kr.co.wap.allyourstudy.fragments.login.LoginFragment
+import kr.co.wap.allyourstudy.fragments.login.RegisterFragment
 
 class LoginActivity : AppCompatActivity() {
 

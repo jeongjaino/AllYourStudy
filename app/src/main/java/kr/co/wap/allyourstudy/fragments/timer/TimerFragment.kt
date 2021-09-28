@@ -1,9 +1,8 @@
-package kr.co.wap.allyourstudy.fragments
+package kr.co.wap.allyourstudy.fragments.timer
 
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
