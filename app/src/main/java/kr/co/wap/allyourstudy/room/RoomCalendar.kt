@@ -14,14 +14,14 @@ class RoomCalendar {
     var date: String = ""
 
     @ColumnInfo
-    var weekday: String = ""
+    var text: String = ""
 
     @ColumnInfo
-    var check: String =""
+    var level: String =""
 
-    constructor(date: String, weekday: String, check: String){
+    constructor(date: String, text: String, level: String){
         this.date = date
-        this.weekday = weekday
-        this.check = check
+        this.text = text
+        this.level = level
     }
 }

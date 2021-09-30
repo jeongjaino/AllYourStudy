@@ -68,18 +68,10 @@ class TimerFragment: Fragment() {
     }
     @RequiresApi(Build.VERSION_CODES.O)
     private fun sendCommandToService(action: String, data: Long) {
-        if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O) {
-            activity?.startForegroundService(Intent(activity, UpTimerService::class.java).apply {
-                this.action = action
-                this.putExtra("data", data)
-            })
-        }
-        else{
-            activity?.startService(Intent(activity, UpTimerService::class.java).apply {
-                this.action = action
-                this.putExtra("data", data)
-            })
-        }
+        activity?.startForegroundService(Intent(activity, UpTimerService::class.java).apply {
+            this.action = action
+            this.putExtra("data", data)
+        })
     }
     private fun resetDialog(){
         val dialog = ResetDialogFragment()

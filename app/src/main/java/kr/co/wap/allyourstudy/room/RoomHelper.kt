@@ -13,7 +13,6 @@ abstract class RoomHelper: RoomDatabase() {
     companion object{
         private var instance: RoomHelper?= null
 
-
         @Synchronized
         fun getInstance(context: Context): RoomHelper? {
             if (instance == null) {

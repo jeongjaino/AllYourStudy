@@ -6,4 +6,10 @@
         <item>일반</item>
         <item>구름</item>
     </string-array>
+    <string-array name="todo_level_array">
+        <item>EASY</item>
+        <item>NORMAL</item>
+        <item>HARD</item>
+    </string-array>
 </resources>
+

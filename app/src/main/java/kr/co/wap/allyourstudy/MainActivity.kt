@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
 import kr.co.wap.allyourstudy.fragments.HomeFragment
+import kr.co.wap.allyourstudy.fragments.todo.TodoListFragment
 import kr.co.wap.allyourstudy.fragments.todo.TodoWriteFragment
 import kr.co.wap.allyourstudy.fragments.youtube.YoutubeFragment
 import kr.co.wap.allyourstudy.model.TimerEvent
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity(){
                     R.id.pomodoroTimer -> { goTimer() }
                     R.id.Youtube -> { goYouTube() }
                     R.id.Home -> { goHome() }
+                    R.id.Todo -> { goTodoList()}
                 }
                 true
             }
@@ -156,6 +158,6 @@ class MainActivity : AppCompatActivity(){
         replaceFragment(TodoWriteFragment())
     }
     fun goTodoList(){
-        replaceFragment(TodoWriteFragment())
+        replaceFragment(TodoListFragment())
     }
 }

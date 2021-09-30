@@ -111,14 +111,6 @@ class TimerActivity : AppCompatActivity(){
         val spinnerTimerAdapter = TimerSpinnerAdapter(this, R.layout.spinner_timer_item, themeList)
         val spinner = binding.timerThemeSpinner
         spinner.adapter = spinnerTimerAdapter
-       /* ArrayAdapter.createFromResource(
-            this,
-            R.array.timer_theme_array,
-            android.R.layout.simple_spinner_item
-        ).also{
-                adapter -> adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-            spinner.adapter = adapter
-        }*/
         spinner.onItemSelectedListener = object: AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, position: Int, p3: Long) {
                 val prefs: SharedPreferences = getSharedPreferences("theme", Context.MODE_PRIVATE)

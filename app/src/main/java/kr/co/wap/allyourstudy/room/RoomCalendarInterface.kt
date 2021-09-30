@@ -13,7 +13,4 @@ interface RoomCalendarInterface {
 
     @Delete
     fun delete(calendar: RoomCalendar)
-
-    @Query("select * from room_calendar WHERE :date")
-    fun loadByDate(date: String): RoomCalendar
 }

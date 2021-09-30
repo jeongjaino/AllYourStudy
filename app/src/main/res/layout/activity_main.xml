@@ -44,7 +44,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:sb_background="@color/gray"
-                app:sb_checked_color="#FA6464"
+                app:sb_checked_color="@color/pomodoro_red"
                 app:sb_show_indicator="false"
                 app:sb_uncheck_color="@color/gray" />
 
@@ -58,7 +58,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/pomodoroToggleButton"
                 app:sb_background="@color/gray"
-                app:sb_checked_color="#749F74"
+                app:sb_checked_color="@color/up_timer_green"
                 app:sb_show_indicator="false"
                 app:sb_uncheck_color="@color/gray" />
 
@@ -72,7 +72,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/UpTimerToggleButton"
                 app:sb_background="@color/gray"
-                app:sb_checked_color="#FFDC5E"
+                app:sb_checked_color="@color/down_timer_yellow"
                 app:sb_show_indicator="false"
                 app:sb_uncheck_color="@color/gray" />
 
