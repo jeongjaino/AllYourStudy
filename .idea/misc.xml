@@ -37,6 +37,7 @@
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_home.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_login.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_logout_dialog.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_page.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_pomodoro.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_pomodoro_rest_dialog.xml" value="0.27291666666666664" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_register.xml" value="0.38645833333333335" />
@@ -47,6 +48,7 @@
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_youtube.xml" value="0.38645833333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_youtube_play.xml" value="0.3109375" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/fragment_youtube_player.xml" value="0.246875" />
+        <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/search_recycler_item.xml" value="0.37083333333333335" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/spinner_timer_item.xml" value="0.3482789855072464" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/todo_recycler_item.xml" value="0.5" />
         <entry key="..\:/Users/jaino/AndroidStudioProjects/PlanToStudy/app/src/main/res/layout/youtube_recycler_item.xml" value="0.25364583333333335" />

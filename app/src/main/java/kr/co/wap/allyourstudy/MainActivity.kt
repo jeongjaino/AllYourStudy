@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import kr.co.wap.allyourstudy.databinding.ActivityMainBinding
 import kr.co.wap.allyourstudy.fragments.HomeFragment
+import kr.co.wap.allyourstudy.fragments.FriendPageFragment
 import kr.co.wap.allyourstudy.fragments.todo.TodoListFragment
 import kr.co.wap.allyourstudy.fragments.todo.TodoWriteFragment
 import kr.co.wap.allyourstudy.fragments.youtube.YoutubeFragment
@@ -66,10 +67,11 @@ class MainActivity : AppCompatActivity(){
                     R.id.Youtube -> { goYouTube() }
                     R.id.Home -> { goHome() }
                     R.id.Todo -> { goTodoList()}
+                    R.id.Friend ->{goPage()}
                 }
                 true
             }
-            selectedItemId = R.id.Home //기본 홈 설정
+            selectedItemId = R.id.Friend //기본 홈 설정
         }
     }
     private fun disabledButton(){
@@ -159,5 +161,8 @@ class MainActivity : AppCompatActivity(){
     }
     fun goTodoList(){
         replaceFragment(TodoListFragment())
+    }
+    fun goPage(){
+        replaceFragment(FriendPageFragment())
     }
 }

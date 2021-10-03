@@ -1,11 +1,14 @@
 package kr.co.wap.allyourstudy.api
 
+import kr.co.wap.allyourstudy.frienddata.SearchData
 import kr.co.wap.allyourstudy.logindata.*
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserService{
     @POST("/auth/register/")
@@ -33,6 +36,8 @@ interface UserService{
         @Body refreshToken: RefreshToken
     ):Call<UnauthorizedResponse>
 
+    @GET("/auth/api/search/")
+    fun getSearchUser(@Query("q") query: String):Call<SearchData>
 }
 
 object RetrofitBuilder{
@@ -41,7 +46,7 @@ object RetrofitBuilder{
 
     init{
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://allstudy.run.goorm.io")
+            .baseUrl("http://3.37.133.227")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 

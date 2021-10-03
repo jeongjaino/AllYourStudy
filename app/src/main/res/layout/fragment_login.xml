@@ -15,7 +15,7 @@
         android:backgroundTint="@color/up_timer_green"
         android:drawableEnd="@drawable/bg_spinner"
         android:ems="10"
-        android:fontFamily="@font/agul3"
+        android:fontFamily="@font/fontg3"
         android:hint="User Name"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
