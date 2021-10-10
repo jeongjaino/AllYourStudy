@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity(){
                 }
                 true
             }
-            selectedItemId = R.id.Friend //기본 홈 설정
+            //selectedItemId = R.id.Home //기본 홈 설정
         }
     }
     private fun disabledButton(){

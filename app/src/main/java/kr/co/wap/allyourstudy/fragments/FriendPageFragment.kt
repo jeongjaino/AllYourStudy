@@ -43,7 +43,7 @@ class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
 
     private lateinit var mainActivity: MainActivity
 
-    // You can do the assignment inside onAttach or onCreate, i.e, before the activity is displayed
+    // registerForActivity assignment inside onAttach or onCreate, i.e, before the activity is displayed
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
@@ -52,7 +52,7 @@ class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
         getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 result: ActivityResult ->
             val imageUri = result.data?.data
-           Glide.with(this).load(imageUri).into(binding.userImage)
+           Glide.with(binding.userImage).load(imageUri).into(binding.userImage)
         }
     }
     override fun onCreateView(
@@ -133,5 +133,6 @@ class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
             -1 -> {binding.profileButton.text = "친구 신청"}
             0 -> {binding.profileButton.text = "친구 요청 보냄"}
         }
+        binding.searchRecyclerView.visibility = View.GONE
     }
 }

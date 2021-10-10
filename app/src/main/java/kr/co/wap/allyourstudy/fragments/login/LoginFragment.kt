@@ -33,8 +33,6 @@ class LoginFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
-
         binding.goRegisterText.setOnClickListener {
             loginActivity.goRegister()
         }
@@ -43,10 +41,10 @@ class LoginFragment : Fragment() {
     }
     private fun startLogin(){
         binding.loginButton.setOnClickListener {
-            val email = binding.emailText.text.toString()
+            val userName = binding.loginNameText.text.toString()
             val password = binding.passwordText.text.toString()
 
-            val request = LoginRequest(email,password)
+            val request = LoginRequest(userName,password)
 
             RetrofitBuilder.userService.login(request).enqueue(object: Callback<LoginResponse>{
                 override fun onResponse(
@@ -56,13 +54,12 @@ class LoginFragment : Fragment() {
                     val responseBody = response.body()
                     val responseCode = response.code()
                     if(responseCode == 200){
-                        Toast.makeText(loginActivity, responseBody!!.email+" 반갑습니다!", Toast.LENGTH_LONG).show()
-                        TokenManager.saveRefreshToken(responseBody.tokens.refresh,loginActivity)
+                        TokenManager.saveRefreshToken(responseBody!!.tokens.refresh,loginActivity)
                         TokenManager.saveAccessToken(responseBody.tokens.access,loginActivity)
                         loginActivity.goMain()
                     }
                     else{
-                        Toast.makeText(loginActivity, "이메일이나 비밀번호가 올바르지 않습니다.",Toast.LENGTH_SHORT).show()
+                        Toast.makeText(loginActivity,responseCode.toString(),Toast.LENGTH_SHORT).show()
                     }
                 }
                 override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
