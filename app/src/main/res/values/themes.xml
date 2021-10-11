@@ -19,4 +19,7 @@
 
         <item name="android:windowBackground">@drawable/ic_screen1</item>
     </style>
+    <style name="Theme.App" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/down_timer_yellow</item>
+    </style>
 </resources>

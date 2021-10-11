@@ -20,9 +20,9 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/innerCardView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:cardCornerRadius="50dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                app:cardCornerRadius="75dp"
                 app:cardElevation="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/pomodoro_progress"
                 app:layout_constraintEnd_toEndOf="@+id/pomodoro_progress"
@@ -36,7 +36,7 @@
                     android:layout_gravity="center"
                     android:padding="14sp"
                     android:text="00:25:00"
-                    android:textSize="18sp"
+                    android:textSize="25sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
                     app:layout_constraintRight_toRightOf="parent"
@@ -45,8 +45,8 @@
 
             <com.dinuscxj.progressbar.CircleProgressBar
                 android:id="@+id/pomodoro_progress"
-                android:layout_width="250dp"
-                android:layout_height="250dp"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
                 app:drawBackgroundOutsideProgress="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

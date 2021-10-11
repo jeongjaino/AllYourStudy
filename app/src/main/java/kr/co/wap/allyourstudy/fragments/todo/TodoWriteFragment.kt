@@ -1,12 +1,16 @@
 package kr.co.wap.allyourstudy.fragments.todo
 
 import android.content.Context
+import android.content.res.Resources
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.FragmentManager
+import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -39,6 +43,9 @@ class TodoWriteFragment : Fragment() {
         binding.writeDoneButton.setOnClickListener{
             insertTodo()
         }
+        binding.CalendarBtd.setOnClickListener{
+            setDate()
+        }
         return binding.root
     }
     private fun loadDate(){
@@ -69,5 +76,18 @@ class TodoWriteFragment : Fragment() {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             spinner.adapter = adapter
         }
+    }
+    private fun setDate(){
+        val datePicker =
+            MaterialDatePicker.Builder.datePicker()
+                .setTitleText("기간을 설정하세요!")
+                .setTheme(R.style.Theme_App)
+                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
+                .build()
+
+        datePicker.addOnPositiveButtonClickListener {
+            binding.writeDateText.text = datePicker.headerText.format(Locale.KOREA)
+        }
+        datePicker.show(mainActivity.supportFragmentManager, "datePicker")
     }
 }
