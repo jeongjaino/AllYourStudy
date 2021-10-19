@@ -1,5 +1,7 @@
 package kr.co.wap.allyourstudy.fragments.todo
 
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
 import android.content.Context
 import android.content.res.Resources
 import android.os.Bundle
@@ -44,12 +46,13 @@ class TodoWriteFragment : Fragment() {
             insertTodo()
         }
         binding.CalendarBtd.setOnClickListener{
-            setDate()
+            //setDate()
+            pickDateTime()
         }
         return binding.root
     }
     private fun loadDate(){
-        val sdf = SimpleDateFormat("MM월 dd일 E요일", Locale.KOREA)
+        val sdf = SimpleDateFormat("MM월 dd일 HH시 mm분", Locale.KOREA)
         val date = sdf.format(System.currentTimeMillis())
         binding.writeDateText.text = date.toString()
     }
@@ -77,17 +80,26 @@ class TodoWriteFragment : Fragment() {
             spinner.adapter = adapter
         }
     }
-    private fun setDate(){
-        val datePicker =
-            MaterialDatePicker.Builder.datePicker()
-                .setTitleText("기간을 설정하세요!")
-                .setTheme(R.style.Theme_App)
-                .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
-                .build()
+    private fun pickDateTime() {
+        val currentDateTime = Calendar.getInstance()
+        val startYear = currentDateTime.get(Calendar.YEAR)
+        val startMonth = currentDateTime.get(Calendar.MONTH)
+        val startDay = currentDateTime.get(Calendar.DAY_OF_MONTH)
+        val startHour = currentDateTime.get(Calendar.HOUR_OF_DAY)
+        val startMinute = currentDateTime.get(Calendar.MINUTE)
+        var dateFormat = SimpleDateFormat("MM월 dd일 HH시 mm분",Locale.KOREA)
 
-        datePicker.addOnPositiveButtonClickListener {
-            binding.writeDateText.text = datePicker.headerText.format(Locale.KOREA)
-        }
-        datePicker.show(mainActivity.supportFragmentManager, "datePicker")
+        DatePickerDialog(requireContext(), { _, year, month, day ->
+            TimePickerDialog(requireContext(), { _, hour, minute ->
+                if(year.toString() != startYear.toString()){
+                    dateFormat = SimpleDateFormat("yyyy년 MM월 dd일 HH시 mm분",Locale.KOREA)
+                }
+                val pickedDate = Calendar.getInstance()
+                pickedDate.set(year, month, day, hour, minute)
+                val pickedDateTime = pickedDate.time
+                val date = dateFormat.format(pickedDateTime)
+                binding.writeDateText.text = date
+            }, startHour, startMinute, false).show()
+        }, startYear, startMonth, startDay).show()
     }
 }
