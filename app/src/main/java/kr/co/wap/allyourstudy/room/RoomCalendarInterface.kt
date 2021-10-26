@@ -13,4 +13,7 @@ interface RoomCalendarInterface {
 
     @Delete
     fun delete(calendar: RoomCalendar)
+
+    @Query("update room_calendar set checked = :checked where `no` =:no")
+    fun modifyChecked(no : Long, checked: Boolean)
 }

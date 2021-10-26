@@ -19,9 +19,13 @@ class RoomCalendar {
     @ColumnInfo
     var level: String =""
 
-    constructor(date: String, text: String, level: String){
+    @ColumnInfo
+    var checked: Boolean = false
+
+    constructor(date: String, text: String, level: String, checked: Boolean){
         this.date = date
         this.text = text
         this.level = level
+        this.checked = checked
     }
 }

@@ -3,16 +3,12 @@ package kr.co.wap.allyourstudy.fragments.todo
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Context
-import android.content.res.Resources
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import androidx.fragment.app.FragmentManager
-import com.google.android.material.datepicker.MaterialDatePicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -45,9 +41,16 @@ class TodoWriteFragment : Fragment() {
         binding.writeDoneButton.setOnClickListener{
             insertTodo()
         }
-        binding.CalendarBtd.setOnClickListener{
-            //setDate()
+        binding.writeDateText.setOnClickListener{
             pickDateTime()
+        }
+        binding.privacyButton.setOnClickListener{
+            if(binding.privacyButton.text == "Private"){
+                binding.privacyButton.text = "Public"
+            }
+            else{
+                binding.privacyButton.text ="Private"
+            }
         }
         return binding.root
     }
@@ -62,7 +65,7 @@ class TodoWriteFragment : Fragment() {
         val date = binding.writeDateText.text.toString()
         val text = binding.writeTodoText.text.toString()
         val level = spinner.selectedItem.toString()
-        val todo = RoomCalendar(date, text, level)
+        val todo = RoomCalendar(date, text, level, false)
         CoroutineScope(Dispatchers.IO).launch {
             helper?.roomCalendarDao()?.insert(todo)
         }

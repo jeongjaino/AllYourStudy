@@ -2,9 +2,11 @@ package kr.co.wap.allyourstudy.fragments.todo
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
@@ -14,9 +16,10 @@ import kotlinx.coroutines.launch
 import kr.co.wap.allyourstudy.MainActivity
 import kr.co.wap.allyourstudy.adapter.TodoAdapter
 import kr.co.wap.allyourstudy.databinding.FragmentTodoListBinding
+import kr.co.wap.allyourstudy.room.RoomCalendar
 import kr.co.wap.allyourstudy.room.RoomHelper
 
-class TodoListFragment : Fragment() {
+class TodoListFragment : Fragment()/*, TodoAdapter.onClickListener */{
 
     private val binding by lazy{ FragmentTodoListBinding.inflate(layoutInflater)}
 
@@ -41,7 +44,7 @@ class TodoListFragment : Fragment() {
         return binding.root
     }
     private fun setAdapter(){
-        val adapter = TodoAdapter()
+        val adapter = TodoAdapter(/*this@TodoListFragment*/)
 
         helper = RoomHelper.getInstance(mainActivity)!!
         CoroutineScope(Dispatchers.IO).launch {
@@ -49,6 +52,8 @@ class TodoListFragment : Fragment() {
         }
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(mainActivity)
-
     }
+   /* override fun onCardClick(position: Int, todoItem: RoomCalendar) {
+
+    }*/
 }
