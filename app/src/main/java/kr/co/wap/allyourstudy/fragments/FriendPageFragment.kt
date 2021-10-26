@@ -1,9 +1,11 @@
 package kr.co.wap.allyourstudy.fragments
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
@@ -13,13 +15,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.theartofdev.edmodo.cropper.CropImage
+import com.theartofdev.edmodo.cropper.CropImageView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,13 +37,29 @@ import kr.co.wap.allyourstudy.databinding.FragmentPageBinding
 import kr.co.wap.allyourstudy.frienddata.Account
 import kr.co.wap.allyourstudy.frienddata.SearchData
 import kr.co.wap.allyourstudy.utils.ADDRESS
+import kr.co.wap.allyourstudy.utils.REQUEST_CODE
 import retrofit2.Call
 import retrofit2.Response
 import java.lang.Exception
 
 class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
 
-    private lateinit var getContent: ActivityResultLauncher<Intent>
+
+    private val cropActivityResultContract = object: ActivityResultContract<Any?, Uri?>(){
+
+        override fun createIntent(context: Context, input: Any?): Intent {
+            return CropImage.activity()
+                .setGuidelines(CropImageView.Guidelines.ON)
+                .setCropShape(CropImageView.CropShape.RECTANGLE)
+                .getIntent(mainActivity)
+        }
+
+        override fun parseResult(resultCode: Int, intent: Intent?): Uri? {
+            return CropImage.getActivityResult(intent).uri
+        }
+    }
+
+    private lateinit var cropActivityResultLauncher: ActivityResultLauncher<Any?>
 
     val binding by lazy{ FragmentPageBinding.inflate(layoutInflater)}
 
@@ -46,19 +68,17 @@ class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
     // registerForActivity assignment inside onAttach or onCreate, i.e, before the activity is displayed
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
         if(context is MainActivity) mainActivity = context
-
-        getContent = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
-                result: ActivityResult ->
-            val imageUri = result.data?.data
-           Glide.with(binding.userImage).load(imageUri).into(binding.userImage)
-        }
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        cropActivityResultLauncher = registerForActivityResult(cropActivityResultContract){
+            it?.let{
+                Glide.with(binding.userImage).load(it).into(binding.userImage)
+            }
+        }
         binding.searchNameText.addTextChangedListener(object: TextWatcher{
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
             }
@@ -80,11 +100,13 @@ class FriendPageFragment : Fragment(), SearchAdapter.onSearchItemClickListener {
         return binding.root
     }
     private fun openGallery(){
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        val intent = Intent(Intent.ACTION_PICK)
         intent.type = MediaStore.Images.Media.CONTENT_TYPE
         intent.type = "image/*"
+        intent.putExtra("crop", true)
+        intent.action = Intent.ACTION_GET_CONTENT
         try {
-            getContent.launch(intent)
+            cropActivityResultLauncher.launch(null)
         }
         catch(e:Exception){e.printStackTrace()}
     }

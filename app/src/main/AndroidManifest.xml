@@ -32,6 +32,8 @@
         <service android:name=".service.CCTService"
             android:enabled="true"
             android:exported="true" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat"/>
         <activity
             android:name=".SplashActivity"
             android:theme="@style/SplashScreenTheme"

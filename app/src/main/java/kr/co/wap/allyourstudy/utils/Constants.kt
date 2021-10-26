@@ -27,4 +27,6 @@ const val CCTIMER_NOTIFICATION_ID = 146
 const val ACCESS_TOKEN = "access_token"
 const val REFRESH_TOKEN = "refresh_token"
 
+const val REQUEST_CODE = "REQUEST_CODE"
+
 const val ADDRESS = "http://3.37.133.227"

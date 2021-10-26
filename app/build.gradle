@@ -38,6 +38,8 @@ android {
 
 dependencies {
 
+    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.+'
+
     def room_version = "2.2.6"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
