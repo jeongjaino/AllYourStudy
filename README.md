@@ -1,6 +1,6 @@
 # ✍Study Play
- ~~Pause~~
- ---
+ ~~Project Pause~~
+
 
 ### 🌈 SUMMARY
 
