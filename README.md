@@ -1,5 +1,6 @@
 # ✍Study Play
---- ~~중단~~
+ ~~Pause~~
+ ---
 
 ### 🌈 SUMMARY
 
