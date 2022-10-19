@@ -15,6 +15,14 @@ Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리�
 - 내 프로필, 상대 프로필 친구 기능
 <br>
 
+## Contributors ✨
+
+At Thirty Workers 
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+
 <table>
   <tr>
     <td align="center"><a href="http://github.com/jeongjaino"><img src="https://avatars.githubusercontent.com/u/77484719?v=4" width="100px;" alt=""/><br /><sub><b>JinHo Jeong</sub></a><br /><a href="http://github.com/jeongjaino" title="Code">💻</a></td>
