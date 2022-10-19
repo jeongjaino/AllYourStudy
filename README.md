@@ -15,6 +15,21 @@ Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리�
 - 내 프로필, 상대 프로필 친구 기능
 <br>
 
+<table>
+  <tr>
+    <td align="center"><a href="http://github.com/jeongjaino"><img src="https://avatars.githubusercontent.com/u/77484719?v=4" width="100px;" alt=""/><br /><sub><b>JinHo Jeong</sub></a><br /><a href="http://github.com/jeongjaino" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/enjoy301"><img src="https://avatars.githubusercontent.com/u/17642762?v=4" width="100px;" alt=""/><br /><sub><b>Eunjong Kim</b></sub></a><br /><a href="http://github.com/enjoy301" title="Code">💻</a></td>
+    <td align="center"><a href="https://github.com/plumplum01"><img src="https://avatars.githubusercontent.com/u/90919127?v=4" width="100px;" at=""/><br /><sub><b>SeoBin Yun</b></sub></a><br /><a href="http://github.com/plumplum01" title="Code">💻</a></td>
+  </tr>
+    <tr>
+    <td align="center">안드로이드</td>
+    <td align="center">백엔드</td>
+    <td align="center">디자이너</td>
+
+  </tr>
+</table>
+
+
 ### Android Tech Stack
 - Minumum SDK 26
 - Kotlin
