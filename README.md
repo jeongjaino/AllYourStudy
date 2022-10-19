@@ -6,15 +6,16 @@
 ??? : 항상 Study With me를 보러 유튜브를 들어갈 때 다른 것도 보게 돼ㅠ.<br>
 Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리케이션! 
 <br>
-        
+<br>
 ### 🌈 FUNCTION
 - 투두를 통한 오늘 일정 작성하기 
 - 다양한 타이머 제공( 뽀모도로 타이머, 타이머, 스톱워치)
 - 매일 누적되는 시간 확인 가능
 - 유튜브 스터디 윗미 제공 
 - 내 프로필, 상대 프로필 친구 기능
----
-### Tech Stack
+<br>
+
+### Android Tech Stack
 - Minumum SDK 26
 - Kotlin
 - Coroutines
@@ -24,6 +25,8 @@ Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리�
 - SplashScreen
 - PierfrancescoSoffritti android-youtube-player
 - Service, ForegroundService
+<br>
+<br>
 
 
 <img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="35%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="35%" height="20%"/>
