@@ -14,6 +14,16 @@ Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리�
 - 유튜브 스터디 윗미 제공 
 - 내 프로필, 상대 프로필 친구 기능
 ---
+### Tech Stack
+- Minumum SDK 26
+- Kotlin
+- Coroutines
+- Retrofit2 + Gson
+- OkHttp3
+- Room
+- SplashScreen
+- PierfrancescoSoffritti android-youtube-player
+- Service, ForegroundService
 
 
 <img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="35%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="35%" height="20%"/>
@@ -31,14 +41,5 @@ Study With me만 틀어주는 공부 앱이 없을까? 해서 만든 어플리�
 ![Untitled](https://user-images.githubusercontent.com/77484719/196684683-54eac74b-1a3a-433d-ae0f-cad1921cbfed.png)
 ---
 
-### Tech Stack
-- Minumum SDK 26
-- Kotlin
-- Coroutines
-- Retrofit2 + Gson
-- OkHttp3
-- Room
-- SplashScreen
-- PierfrancescoSoffritti android-youtube-player
-- Service, ForegroundService
+## ATTHIRTYWORKERS!
 
