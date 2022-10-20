@@ -52,10 +52,10 @@ At Thirty Workers
 <br>
 
 
-<img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="30%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="30%" height="20%"/> <img src="https://user-images.githubusercontent.com/77484719/196684611-1ba3b408-c781-4cec-acdd-af81a96f3bef.png"/>
+<img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="40%" height="30%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="40%" height="30%"/> 
 ---
-![Untitled (6)](https://user-images.githubusercontent.com/77484719/196684629-cc179e32-268b-4b3a-b718-007f3d7e4869.png)
-![Untitled (5)](https://user-images.githubusercontent.com/77484719/196684638-23d11b4f-2f22-4e57-90e2-05d2ba7decc6.png)
+<img src="https://user-images.githubusercontent.com/77484719/196684611-1ba3b408-c781-4cec-acdd-af81a96f3bef.png"/> <img src="https://user-images.githubusercontent.com/77484719/196684638-23d11b4f-2f22-4e57-90e2-05d2ba7decc6.png"/>
+
 ---
 ![Untitled (4)](https://user-images.githubusercontent.com/77484719/196684653-184665e3-3268-45e1-85e4-a37e1b25e748.png)
 ![Untitled (3)](https://user-images.githubusercontent.com/77484719/196684659-800d6555-708d-4061-b180-7c6c0d02f588.png)
