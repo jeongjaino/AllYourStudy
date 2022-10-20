@@ -52,17 +52,13 @@ At Thirty Workers
 <br>
 
 
-<img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="40%" height="30%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="40%" height="30%"/> 
+<img src="https://user-images.githubusercontent.com/77484719/196679553-b5caca82-86b5-42ae-982a-4099b31a860d.png" width="30%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196679797-6dc2a199-7e9d-4a46-8e02-f14c50e6c38d.png" width="30%" height="20%"/> <img src="https://user-images.githubusercontent.com/77484719/196684653-184665e3-3268-45e1-85e4-a37e1b25e748.png" width="30%" height="20%"/>
 ---
-<img src="https://user-images.githubusercontent.com/77484719/196684611-1ba3b408-c781-4cec-acdd-af81a96f3bef.png"/> <img src="https://user-images.githubusercontent.com/77484719/196684638-23d11b4f-2f22-4e57-90e2-05d2ba7decc6.png"/>
+<img src="https://user-images.githubusercontent.com/77484719/196684611-1ba3b408-c781-4cec-acdd-af81a96f3bef.png"  width="30%" height="20%"/> <img src="https://user-images.githubusercontent.com/77484719/196684638-23d11b4f-2f22-4e57-90e2-05d2ba7decc6.png" width="30%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196853881-77f57cbd-caf7-4972-bf6b-a13c701f8333.png" width="30%" height="20%"/>
+---
+<img src="https://user-images.githubusercontent.com/77484719/196684677-9dcfdf5c-081e-4378-9d9e-c1a9604fbae7.png" width="30%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196684683-54eac74b-1a3a-433d-ae0f-cad1921cbfed.png" width="30%" height="20%"/><img src="https://user-images.githubusercontent.com/77484719/196684659-800d6555-708d-4061-b180-7c6c0d02f588.png" width="30%" height="20%"/>
 
----
-![Untitled (4)](https://user-images.githubusercontent.com/77484719/196684653-184665e3-3268-45e1-85e4-a37e1b25e748.png)
-![Untitled (3)](https://user-images.githubusercontent.com/77484719/196684659-800d6555-708d-4061-b180-7c6c0d02f588.png)
----
-![Untitled (1)](https://user-images.githubusercontent.com/77484719/196684677-9dcfdf5c-081e-4378-9d9e-c1a9604fbae7.png)
-![Untitled](https://user-images.githubusercontent.com/77484719/196684683-54eac74b-1a3a-433d-ae0f-cad1921cbfed.png)
----
+
 
 ## ATTHIRTYWORKERS!
 
